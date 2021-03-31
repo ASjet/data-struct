@@ -5,8 +5,8 @@
 typedef int link_size_t;
 enum LINK_STAT_FLAG
 {
-    LINK_ERR,
-    LINK_OK
+    LINK_OK,
+    LINK_ERR
 };
 #define ERR_OUT_OF_RANGE "Error: Index out of range\n"
 

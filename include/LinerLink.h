@@ -1,6 +1,7 @@
 #ifndef LINERLINK_H
 #define LINERLINK_H
 
+#include <iostream>
 #include "Link.h"
 
 template <typename T>
@@ -11,17 +12,29 @@ public:
     LinerLink() = default;
     ~LinerLink() = default;
 
-    void insert(T _Element, link_size_t _Index);
-    T getElement(link_size_t _Index);
+    void disp(void) const;
+    void insert(link_size_t _Index, T _Element);
+    T getElem(link_size_t _Index);
+    link_size_t find(T _Element) const;
     void remove(link_size_t _Index);
     using Link<T>::initialize;
+
+private:
     using Link<T>::len;
     using Link<T>::head_ptr;
     using Link<T>::tail_ptr;
 };
 
 template <typename T>
-void LinerLink<T>::insert(T _Element, link_size_t _Index)
+void LinerLink<T>::disp(void) const
+{
+    for(Node<T>* p = head_ptr; p != nullptr; p = p->next_ptr)
+        std::cout << ((p == head_ptr)?'\0':' ') << p->value();
+    std::cout << std::endl;
+}
+
+template <typename T>
+void LinerLink<T>::insert(link_size_t _Index, T _Element)
 {
     assert((_Index <= len) && ERR_OUT_OF_RANGE);
     if (len == 0)
@@ -42,9 +55,22 @@ void LinerLink<T>::insert(T _Element, link_size_t _Index)
 }
 
 template <typename T>
-T LinerLink<T>::getElement(link_size_t _Index)
+T LinerLink<T>::getElem(link_size_t _Index)
 {
     return (*this)[_Index]->value();
+}
+
+template <typename T>
+link_size_t LinerLink<T>::find(T _Element) const
+{
+    link_size_t cnt = 0;
+    Node<T> *p = head_ptr;
+    while(p->value() != _Element)
+    {
+        p = p->next_ptr;
+        ++cnt;
+    }
+    return cnt;
 }
 
 template <typename T>

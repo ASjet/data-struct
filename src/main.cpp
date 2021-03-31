@@ -2,36 +2,36 @@
 #include <string>
 #include <vector>
 #include "LinerLink.h"
+#include "Sqlist.h"
 ////////////////////////////////////////////////////////////////////////////////
 using std::cin;
 using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
+
+void testSqlist(void);
 ////////////////////////////////////////////////////////////////////////////////
 int main(void)
-{
-    // LinerLink<int> link;
-    auto link = new LinerLink<int>;
-    link->push(5);
-    link->push(1234);
-    cout << link->length() << endl
-         << link->pop() << endl
-         << link->length() << endl
-         << link->empty() << endl
-         << link->pop() << endl
-         << link->empty() << endl
-         << link->length() << endl;
-    link->insert(5,0);
-    cout << link->getElement(0) << endl;
-    link->remove(0);
-    link->push(123);
-    link->insert(10,1);
-    cout << link->head() << endl
-         << link->tail() << endl
-         << link->pop() << endl
-         << link->head() << endl
-         << link->tail() << endl;
-    delete link;
+{ // 0 0 2 4 4 4 7 7
+     Sqlist<int> * L = new Sqlist<int>(50);
+     L->insert(0, 0);
+     L->insert(1, 0);
+     L->insert(2, 2);
+     L->insert(3, 4);
+     L->insert(4, 4);
+     L->insert(5, 4);
+     L->insert(6, 7);
+     L->insert(7, 7);
+     L->disp();
+     L->unique();
+     L->disp();
+     delete L;
+
     return 0;
+}
+
+void testSqlist(void)
+{
+
 }
