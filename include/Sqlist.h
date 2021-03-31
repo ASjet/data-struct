@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "Array.h"
-
+////////////////////////////////////////////////////////////////////////////////
 template<typename T>
 class Sqlist : public Array<T>
 {
@@ -26,7 +26,7 @@ class Sqlist : public Array<T>
     using Array<T>::base;
     using Array<T>::tail_i;
 };
-
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void Sqlist<T>::disp(void) const
 {
@@ -79,7 +79,8 @@ template <typename T>
 void Sqlist<T>::unique(void)
 {
     T cur;
-    for(array_size_t i = 0; i != len; ++i)
+    array_size_t i = 0;
+    while(i < len)
     {
         if(i != 0 && cur == base[i])
         {
@@ -87,7 +88,7 @@ void Sqlist<T>::unique(void)
             --len;
         }
         else
-            cur = base[i];
+            cur = base[i++];
     }
 }
 #endif

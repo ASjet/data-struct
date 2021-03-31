@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Link.h"
 
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class LinerLink : public Link<T>
 {
@@ -24,7 +25,7 @@ private:
     using Link<T>::head_ptr;
     using Link<T>::tail_ptr;
 };
-
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void LinerLink<T>::disp(void) const
 {

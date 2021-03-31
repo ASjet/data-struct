@@ -9,7 +9,7 @@ enum LINK_STAT_FLAG
     LINK_ERR
 };
 #define ERR_OUT_OF_RANGE "Error: Index out of range\n"
-
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class Link;
 
@@ -52,7 +52,7 @@ public:
 private:
     T *body = nullptr;
 };
-
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 Node<T> *Node<T>::next(void) const
 {
@@ -126,7 +126,7 @@ protected:
     Node<T> *tail_ptr = nullptr;
     link_size_t len = 0;
 };
-
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 Node<T> *Link<T>::operator[](link_size_t _Index)
 {

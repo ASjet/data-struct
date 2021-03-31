@@ -1,6 +1,4 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include "Sqlist.h"
 #define MAX_SIZE 50
 typedef char elem_t;
@@ -8,8 +6,13 @@ typedef char elem_t;
 using std::cin;
 using std::cout;
 using std::endl;
-using std::string;
-using std::vector;
+void addon1(void);
+template <typename T> void addon2(void);
+struct stru1
+{
+    char name[10];
+    int id;
+};
 ////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
@@ -40,5 +43,46 @@ int main(void)
     cout << " (12)释放顺序表L" << endl;
     delete L;
 
+    cout << "附加题1:" << endl;
+    addon1();
+    cout << "附加题2:" << endl
+         << "char型:" << endl;
+    addon2<char>();
+    cout << "int型:" << endl;
+    addon2<int>();
+    cout << "float型:" << endl;
+    addon2<float>();
+    cout << "double型:" << endl;
+    addon2<double>();
+    cout << "自定义结构体{char[10], int}:" << endl;
+    addon2<stru1>();
+
     return 0;
+}
+
+void addon1(void)
+{
+    Sqlist<int> *L = new Sqlist<int>(50);
+    L->insert(0, 0);
+    L->insert(1, 0);
+    L->insert(2, 2);
+    L->insert(3, 4);
+    L->insert(4, 4);
+    L->insert(5, 4);
+    L->insert(6, 7);
+    L->insert(7, 7);
+    L->disp();
+    L->unique();
+    L->disp();
+    delete L;
+}
+
+template <typename T>
+void addon2(void)
+{
+    int var1, i;
+    T var2[5];
+    printf("var1 变量的地址： %p\n", &var1);
+    for (i = 0; i < 2; i++)
+        printf("var2[%d] 变量的地址： %p\n", i, &var2[i]);
 }
