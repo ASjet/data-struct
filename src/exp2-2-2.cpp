@@ -11,10 +11,12 @@ int main(void)
 {
     LinerLink<int> * LF = new LinerLink<int>;
     LinerLink<int> * LR = new LinerLink<int>;
-    LF->insert(0,123);
-    LR->insert(LR->length(),456);
-    LF->disp();
-    LR->disp();
+    for(link_size_t i = 0; i != 10; ++i)
+    {
+        LF->insert(0,i);
+        LR->insert(LR->length(),i);
+    }
+    cout << LF << endl << LR << endl;
     delete LF;
     delete LR;
     return 0;
