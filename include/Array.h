@@ -99,17 +99,23 @@ ARRAY_STAT_FLAG Array<T>::move(array_size_t _Begin, array_size_t _End, array_siz
     if(_Offset == 0)
         return ARR_OK;
 
+    T *source, *target;
+
     array_size_t seg_len = _End - _Begin + 1;
     if(_Offset > 0)
     {
-        for(array_size_t i = 0; i != seg_len; ++i)
-            base[_End + _Offset - i] = base[_End - i];
+        target = base + _End + _Offset;
+        source = base + _End;
+        while(seg_len--)
+            *target-- = *source--;
         memset(base+_Begin, 0, sizeof(T)*_Offset);
     }
     else
     {
-        for(array_size_t i = 0; i != seg_len; ++i)
-            base[_Begin + _Offset + i] = base[_Begin + i];
+        target = base + _Begin + _Offset;
+        source = base + _Begin;
+        while(seg_len--)
+            *target++ = *source++;
         memset(base+_End+1+_Offset, 0, sizeof(T)*(-_Offset));
     }
     return ARR_OK;
