@@ -113,6 +113,7 @@ public:
     }
     Node<T> *operator[](link_size_t _Index);
     void initialize(T _Element);
+    void initialize(Node<T> * _HeadPtr, Node<T> * _TailPtr, link_size_t _Length);
     Node<T> *head(void) const;
     Node<T> *tail(void) const;
     bool empty(void) const;
@@ -142,6 +143,16 @@ void Link<T>::initialize(T _Element)
 {
     head_ptr = new Node<T>(_Element);
     tail_ptr = head_ptr;
+}
+
+template <typename T>
+void Link<T>::initialize(Node<T> * _HeadPtr, Node<T> * _TailPtr, link_size_t _Length)
+{
+    head_ptr = _HeadPtr;
+    tail_ptr = _TailPtr;
+    len = _Length;
+    head_ptr->prev_ptr = nullptr;
+    tail_ptr->next_ptr = nullptr;
 }
 
 template <typename T>
