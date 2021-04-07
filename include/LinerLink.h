@@ -4,6 +4,11 @@
 #include <iostream>
 #include "Link.h"
 
+template<typename T>
+class LinerLink;
+
+template<typename T>
+std::ostream& operator<<(std::ostream& _Ostream, LinerLink<T> * _LinerLink);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class LinerLink : public Link<T>
@@ -18,7 +23,7 @@ public:
     T getElem(link_size_t _Index);
     link_size_t find(T _Element) const;
     void remove(link_size_t _Index);
-    // friend std::ostream& operator<<(std::ostream& _Ostream, LinerLink<T> * _LinerLink);
+    friend std::ostream& operator<<<T>(std::ostream& _Ostream, LinerLink<T> * _LinerLink);
     using Link<T>::initialize;
 
 private:
@@ -35,13 +40,13 @@ void LinerLink<T>::disp(void) const
     std::cout << std::endl;
 }
 
-// template <typename T>
-// std::ostream& operator<<(std::ostream& _Ostream, LinerLink<T> * _LinerLink)
-// {
-//     for(Node<T>* p = _LinerLink->head_ptr; p != nullptr; p = p->_LinerLink)
-//         _Ostream << ((p == _LinerLink->head_ptr)?'\0':' ') << p->value();
-//     return _Ostream;
-// }
+template <typename T>
+std::ostream& operator<<(std::ostream& _Ostream, LinerLink<T> * _LinerLink)
+{
+    for(Node<T>* p = _LinerLink->head_ptr; p != nullptr; p = p->next_ptr)
+        _Ostream << ((p == _LinerLink->head_ptr)?'\0':' ') << p->value();
+    return _Ostream;
+}
 
 template <typename T>
 void LinerLink<T>::insert(link_size_t _Index, T _Element)
