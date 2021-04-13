@@ -42,17 +42,19 @@ int main(void)
     Node<elem_t> *A_head, *A_tail;
     Node<elem_t> *B_head, *B_tail;
     link_size_t A_len = 0, B_len = 0, len = A->length();
+    elem_t tmp;
 
     head = A->head();
     tail = A->tail();
     p = head;
 
-    for (link_size_t i = 0; i != len; ++i)
+    for (link_size_t i = 0; i < len; ++i)
     {
         next = p->next();
-        if (p->value() % 2 == 0)
+        tmp = A->remove(A_len);
+        if (tmp % 2 == 0)
         {
-            A->insert(0, p->value());
+            A->insert(0, tmp);
             A_head = A->head();
             if(A_len == 0)
                 A_tail = A->head();
@@ -60,16 +62,14 @@ int main(void)
         }
         else
         {
-            A->push(p->value());
+            A->insert(len-1, tmp);
             B_tail = A->tail();
             if(B_len == 0)
                 B_head = A->tail();
             ++B_len;
         }
-        delete p;
         p = next;
     }
-
     A->initialize(A_head, A_tail, A_len);
     B->initialize(B_head, B_tail, B_len);
     cout << A << endl << B << endl;
