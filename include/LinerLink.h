@@ -18,11 +18,10 @@ public:
     LinerLink() = default;
     ~LinerLink() = default;
 
-    void disp(void) const;
-    void insert(link_size_t _Index, T _Element);
     T getElem(link_size_t _Index);
     link_size_t find(T _Element) const;
-    void remove(link_size_t _Index);
+    void insert(link_size_t _Index, T _Element);
+    T remove(link_size_t _Index);
     friend std::ostream& operator<<<T>(std::ostream& _Ostream, LinerLink<T> * _LinerLink);
     using Link<T>::initialize;
 
@@ -33,25 +32,17 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-void LinerLink<T>::disp(void) const
-{
-    for(Node<T>* p = head_ptr; p != nullptr; p = p->next_ptr)
-        std::cout << ((p == head_ptr)?'\0':' ') << p->value();
-    std::cout << std::endl;
-}
-
-template <typename T>
 std::ostream& operator<<(std::ostream& _Ostream, LinerLink<T> * _LinerLink)
 {
-    for(Node<T>* p = _LinerLink->head_ptr; p != nullptr; p = p->next_ptr)
-        _Ostream << ((p == _LinerLink->head_ptr)?'\0':' ') << p->value();
+    for(Node<T>* p = _LinerLink->head(); p != nullptr; p = p->next())
+        _Ostream << ((p == _LinerLink->head())?'\0':' ') << p->value();
     return _Ostream;
 }
 
 template <typename T>
 void LinerLink<T>::insert(link_size_t _Index, T _Element)
 {
-    assert((_Index <= len) && ERR_OUT_OF_RANGE);
+    assert((_Index <= len) && "Error: Index out of range\n");
     if (len == 0)
         initialize(_Element);
     else if (_Index == len)
@@ -67,6 +58,22 @@ void LinerLink<T>::insert(link_size_t _Index, T _Element)
             head_ptr = cur->prev_ptr;
     }
     ++len;
+}
+
+template <typename T>
+T LinerLink<T>::remove(link_size_t _Index)
+{
+    assert((_Index < len) && "Error: Index out of range\n");
+    T res;
+    Node<T> *p = (*this)[_Index];
+    res = p->value();
+    if(p == head_ptr)
+        head_ptr = p->next_ptr;
+    if(p == tail_ptr)
+        tail_ptr = p->prev_ptr;
+    delete p;
+    --len;
+    return res;
 }
 
 template <typename T>
@@ -86,19 +93,6 @@ link_size_t LinerLink<T>::find(T _Element) const
         ++cnt;
     }
     return cnt;
-}
-
-template <typename T>
-void LinerLink<T>::remove(link_size_t _Index)
-{
-    assert((_Index < len) && ERR_OUT_OF_RANGE);
-    Node<T> *p = (*this)[_Index];
-    if(p == head_ptr)
-        head_ptr = p->next_ptr;
-    if(p == tail_ptr)
-        tail_ptr = p->prev_ptr;
-    delete p;
-    --len;
 }
 
 #endif
