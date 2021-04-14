@@ -56,6 +56,7 @@ template <typename T>
 void Link<T>::initializeL(T *_Base, link_size_t _Length)
 {
     clear();
+    head_ptr = new Node<T>;
     Node<T> *p = head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
     {
@@ -74,6 +75,7 @@ template <typename T>
 void Link<T>::initializeR(T *_Base, link_size_t _Length)
 {
     clear();
+    tail_ptr = new Node<T>;
     Node<T> *p = tail_ptr;
     for(link_size_t i = 0; i < _Length; ++i)
     {
@@ -102,7 +104,7 @@ template <typename T>
 void Link<T>::clear()
 {
     Node<T> *cur = head_ptr, *next;
-    while (cur != nullptr)
+    while (len--)
     {
         next = cur->next_ptr;
         delete cur;
