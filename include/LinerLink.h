@@ -16,7 +16,10 @@ class LinerLink : public Link<T>
 
 public:
     LinerLink() = default;
-    ~LinerLink() = default;
+    ~LinerLink()
+    {
+        Link<T>::clear();
+    }
 
     T getElem(link_size_t _Index);
     link_size_t find(T _Element) const;
