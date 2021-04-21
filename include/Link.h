@@ -26,9 +26,6 @@ public:
     link_size_t length(void) const;
 
 protected:
-    void push(T _Element);
-    T pop(void);
-
     Node<T> *head_ptr = nullptr;
     Node<T> *tail_ptr = nullptr;
     link_size_t len = 0;
@@ -136,33 +133,6 @@ template <typename T>
 link_size_t Link<T>::length(void) const
 {
     return len;
-}
-
-template <typename T>
-void Link<T>::push(T _Element)
-{
-    if (len == 0)
-        initialize(_Element);
-    else
-    {
-        tail_ptr->insert_behind(_Element);
-        tail_ptr = tail_ptr->next_ptr;
-    }
-    ++len;
-}
-
-template <typename T>
-T Link<T>::pop(void)
-{
-    assert((len > 0) && "There is no element to pop in current link");
-    T ret = tail_ptr->value();
-    Node<T> *pre = tail_ptr->prev_ptr;
-    if (pre == nullptr)
-        head_ptr = pre;
-    delete tail_ptr;
-    tail_ptr = pre;
-    --len;
-    return ret;
 }
 
 #endif
