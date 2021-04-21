@@ -5,6 +5,7 @@
 template <typename T> class Link;
 template <typename T> class LinerLink;
 template <typename T> class CLink;
+template <typename T> class LinkStack;
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class Node
@@ -34,6 +35,7 @@ public:
     friend class Link<T>;
     friend class LinerLink<T>;
     friend class CLink<T>;
+    friend class LinkStack<T>;
 
     Node<T> * next(void) const;
     Node<T> * prev(void) const;
