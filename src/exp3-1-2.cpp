@@ -6,13 +6,14 @@ using std::cin;
 using std::cout;
 using std::endl;
 typedef int elem_t;
+typedef LinkStack<elem_t> Stack;
 const link_size_t MAX_SIZE = 50;
 void addon1(int _Cases);
 void addon2(int _Cases);
 ////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
-    LinkStack<elem_t> * S = new LinkStack<elem_t>;
+    Stack * S = new Stack;
     for(int i = 1; i != 7; ++i)
         S->push(i);
     elem_t top;
@@ -26,9 +27,9 @@ int main(void)
 }
 void addon1(int _Cases)
 {
-    LinkStack<char> * l = new LinkStack<char>;
-    LinkStack<char> * m = new LinkStack<char>;
-    LinkStack<char> * s = new LinkStack<char>;
+    Stack * l = new Stack;
+    Stack * m = new Stack;
+    Stack * s = new Stack;
     std::string exp;
     while(_Cases--)
     {
@@ -84,7 +85,7 @@ void addon1(int _Cases)
 ////////////////////////////////////////////////////////////////////////////////
 void addon2(int _Cases)
 {
-    LinkStack<int> * s = new LinkStack<int>;
+    Stack * s = new Stack;
     std::string exp;
     while(_Cases--)
     {
