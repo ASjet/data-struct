@@ -6,11 +6,12 @@ using std::cin;
 using std::cout;
 using std::endl;
 typedef int elem_t;
+typedef SeqStack<elem_t> Stack;
 const array_size_t MAX_SIZE = 50;
 ////////////////////////////////////////////////////////////////////////////////
 int main(void)
 {
-    SeqStack<elem_t> * S = new SeqStack<elem_t>(MAX_SIZE);
+    Stack * S = new Stack(MAX_SIZE);
     for(int i = 1; i != 7; ++i)
         S->push(i);
 
