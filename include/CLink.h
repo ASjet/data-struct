@@ -89,7 +89,7 @@ void CLink<T>::initializeR(T *_Base, link_size_t _Length)
         if (i != 0)
         {
             p->next_ptr = new Node<T>;
-            p = p->next_ptr->prev_ptr = p;
+            p->next_ptr->prev_ptr = p;
             p = p->next_ptr;
         }
         ++len;
