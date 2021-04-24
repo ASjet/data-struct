@@ -13,12 +13,15 @@ class SeqStack : public Array<T>
     {
         for(array_size_t i = 0; i < _Length; ++i)
             push(_Base[i]);
+        len = _Length;
+        sp = _Length;
     }
     ~SeqStack() = default;
 
-    void push(T _Element);
-    T pop(void);
-    T GetTop(void) const;
+    bool push(T _Element);
+    bool pop(void);
+    bool pop(T * _Destination);
+    bool GetTop(T *_Destination) const;
 
     private:
     using Array<T>::len;
@@ -28,27 +31,44 @@ class SeqStack : public Array<T>
 };
 
 template<typename T>
-void SeqStack<T>::push(T _Element)
+bool SeqStack<T>::push(T _Element)
 {
-    ++sp;
-    assert((sp < size)&&"Error: Stack Overflow!");
+    if(len == size)
+        return false;
     base[sp] = _Element;
+    ++sp;
     ++len;
+    return true;
 }
 
 template <typename T>
-T SeqStack<T>::pop(void)
+bool SeqStack<T>::pop(void)
 {
-    assert((len > 0)&&"Error: Stack is empty!");
+    if(len <= 0)
+        return false;
+    --sp;
     --len;
-    return base[sp--];
+    return true;
+}
+
+template <typename T>
+bool SeqStack<T>::pop(T * _Destination)
+{
+    if(len <= 0)
+        return false;
+    --sp;
+    *_Destination = base[sp];
+    --len;
+    return true;
 }
 
 template<typename T>
-T SeqStack<T>::GetTop(void) const
+bool SeqStack<T>::GetTop(T* _Destination) const
 {
-    assert((len > 0)&&"Error: Stack empty!");
-    return base[sp];
+    if(len <= 0)
+        return false;
+    *_Destination = base[sp];
+    return true;
 }
 
 #endif
