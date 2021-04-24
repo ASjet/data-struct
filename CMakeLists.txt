@@ -41,6 +41,11 @@ add_executable(
     src/exp3-1-2.cpp
 )
 
+add_executable(
+    exp3-1-addon
+    src/exp3-1-addon.cpp
+)
+
 # SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 SET(CMAKE_BUILD_TYPE Debug)
 add_compile_options(-O0 -g)
