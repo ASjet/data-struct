@@ -19,7 +19,6 @@ int main(void)
     addon1(2);
     cout << "附加题2" << endl;
     addon2(2);
-    (;
     return 0;
 }
 void addon1(int _Cases)
@@ -77,6 +76,9 @@ void addon1(int _Cases)
         if(s->length() != 0)
             cout << "Expected ')' in expression" << endl;
     }
+    delete l;
+    delete m;
+    delete s;
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -104,4 +106,5 @@ void addon2(int _Cases)
         s->pop(&res);
         cout << res << endl;
     }
+    delete s;
 }
