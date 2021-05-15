@@ -18,6 +18,7 @@ public:
     ~CirQueue() = default;
     bool push(T _Element);
     bool pop(T &_Destination);
+    bool pop(void);
     bool empty(void) const;
     void sort(bool (*comp)(T, T));
     friend std::ostream& operator<<<>(std::ostream& _Ostream, CirQueue<T> * _CirQueue);
@@ -58,6 +59,18 @@ bool CirQueue<T>::pop(T &_Destination)
         return false;
 
     _Destination = base[head];
+    if(len != 1)
+        head = (head + 1) % size;
+    --len;
+    return true;
+}
+
+template <typename T>
+bool CirQueue<T>::pop(void)
+{
+    if(len <= 0)
+        return false;
+
     if(len != 1)
         head = (head + 1) % size;
     --len;
