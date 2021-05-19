@@ -115,7 +115,7 @@ void Link<T>::clear()
 template <typename T>
 bool Link<T>::empty(void) const
 {
-    return (len > 0) ? false : true;
+    return (len == 0);
 }
 template <typename T>
 Node<T> *Link<T>::head(void) const
