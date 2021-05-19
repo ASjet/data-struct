@@ -14,8 +14,8 @@ class LinkStack : public Link<T>
 
     void push(T _Element);
     bool pop(void);
-    bool pop(T * _Destination);
-    bool GetTop(T * _Destination) const;
+    bool pop(T & _Destination);
+    bool GetTop(T & _Destination) const;
     using Link<T>::initialize;
 
     private:
@@ -52,11 +52,11 @@ bool LinkStack<T>::pop(void)
 }
 
 template <typename T>
-bool LinkStack<T>::pop(T * _Destination)
+bool LinkStack<T>::pop(T & _Destination)
 {
     if(len <= 0)
         return false;
-    *_Destination = tail_ptr->value();
+    _Destination = tail_ptr->value();
     Node<T> *pre = tail_ptr->prev_ptr;
     if (pre == nullptr)
         head_ptr = pre;
@@ -67,12 +67,12 @@ bool LinkStack<T>::pop(T * _Destination)
 }
 
 template <typename T>
-bool LinkStack<T>::GetTop(T * _Destination) const
+bool LinkStack<T>::GetTop(T & _Destination) const
 {
     if(len <= 0)
         return false;
     else
-        *_Destination = tail_ptr->value();
+        _Destination = tail_ptr->value();
     return true;
 }
 
