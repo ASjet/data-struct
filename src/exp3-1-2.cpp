@@ -22,14 +22,14 @@ int main(void)
         S->push(i);
     }
     cout << endl;
-    S->GetTop(&e);
+    S->GetTop(e);
     cout << "    GetTop()=" << e << endl;
 
     cout << "    (4)栈为" << ((S->empty()) ? "空" : "非空") << endl;
     cout << "    (5)出栈序列:";
     while(!S->empty())
     {
-        S->pop(&e);
+        S->pop(e);
         cout << e << ((S->empty())?'\0':' ');
     }
     cout << endl;

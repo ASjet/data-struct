@@ -11,10 +11,9 @@ int main(void)
 {
     elem_t *e = new elem_t;
     STACK_FLAG flag;
-    ShareStack<elem_t> *s = new ShareStack<elem_t>;
+    ShareStack<elem_t> *s = new ShareStack<elem_t>(MAX_SIZE);
 
     cout << "(1)initialize size of " << MAX_SIZE << endl;
-    s->init(MAX_SIZE);
     bool empty = s->isEmpty(LEFT_STACK) && s->isEmpty(RIGHT_STACK);
 
     cout << "(2)is empty? " << ((empty) ? "Yes" : "No") << endl;

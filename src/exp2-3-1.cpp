@@ -10,7 +10,7 @@ using std::string;
 using std::vector;
 typedef char elem_t;
 template<typename T>
-Node<T>* SearchLocate(CLink<T> * _CLink, clink_size_t _Index);
+LinkNode<T>* SearchLocate(CLink<T> * _CLink, clink_size_t _Index);
 template<typename T>
 void addon2(clink_size_t _N, clink_size_t _X, clink_size_t _Y);
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ int main(void)
     int n = 15;
     int x = 10;
     int y = 18;
-    Node<int> * p = nullptr;
+    LinkNode<int> * p = nullptr;
     CLink<int> * CL = new CLink<int>;
     for(int i = 0; i < n; ++i)
         CL->insert(CL->length(), i);
@@ -52,10 +52,10 @@ int main(void)
 }
 
 template<typename T>
-Node<T>* SearchLocate(CLink<T> * _CLink, clink_size_t _Index)
+LinkNode<T>* SearchLocate(CLink<T> * _CLink, clink_size_t _Index)
 {
-    Node<T> * head = _CLink->head();
-    Node<T> * p = head, *res = head;
+    LinkNode<T> * head = _CLink->head();
+    LinkNode<T> * p = head, *res = head;
     if(_CLink->length() < _Index)
     {
         std::cerr << "Index out of range" << std::endl;
@@ -78,7 +78,7 @@ void addon2(clink_size_t _N, clink_size_t _X, clink_size_t _Y)
     for(int i = 0; i < _N; ++i)
         CL->insert(CL->length(), i);
 
-    Node<T> * p = CL->head();
+    LinkNode<T> * p = CL->head();
     while(p != nullptr)
     {
         for(clink_size_t i = 0; i < _X; ++i)

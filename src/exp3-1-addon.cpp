@@ -100,10 +100,10 @@ void addon2(int _Cases)
             }
         }
         int op1,op2,res;
-        s->pop(&op1);
-        s->pop(&op2);
+        s->pop(op1);
+        s->pop(op2);
         s->push(op1+op2);
-        s->pop(&res);
+        s->pop(res);
         cout << res << endl;
     }
     delete s;

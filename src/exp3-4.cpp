@@ -15,7 +15,7 @@ void addon(void);
 int main(void)
 {
     cout << "链队的基本运算如下:" << endl;
-    cout << "\t(1)初始化链列q" << endl;
+    cout << "\t(1)初始化链队q" << endl;
     LinkQueue<elem_t> *lq = new LinkQueue<elem_t>;
     elem_t e;
     cout << "\t(2)依次进链队元素a,b,c" << endl;

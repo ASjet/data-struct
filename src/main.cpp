@@ -25,9 +25,9 @@ int main(void)
     L->insert(5, 4);
     L->insert(6, 7);
     L->insert(7, 7);
-    L->disp();
+    cout << L << endl;
     L->unique();
-    L->disp();
+    cout << L << endl;
     Addon2();
     delete L;
 

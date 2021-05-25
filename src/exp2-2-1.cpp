@@ -38,9 +38,9 @@ int main(void)
     cout << "附加题:" << endl << A << endl;
 
     LinerLink<elem_t> *B = new LinerLink<elem_t>;
-    Node<elem_t> *head, *tail, *p, *next;
-    Node<elem_t> *A_head, *A_tail;
-    Node<elem_t> *B_head, *B_tail;
+    LinkNode<elem_t> *head, *tail, *p, *next;
+    LinkNode<elem_t> *A_head, *A_tail;
+    LinkNode<elem_t> *B_head, *B_tail;
     link_size_t A_len = 0, B_len = 0, len = A->length();
     elem_t tmp;
 
