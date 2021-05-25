@@ -42,7 +42,7 @@ bool LinkStack<T>::pop(void)
 {
     if(len <= 0)
         return false;
-    Node<T> *pre = tail_ptr->prev_ptr;
+    LinkNode<T> *pre = tail_ptr->prev_ptr;
     if (pre == nullptr)
         head_ptr = pre;
     delete tail_ptr;
@@ -57,7 +57,7 @@ bool LinkStack<T>::pop(T & _Destination)
     if(len <= 0)
         return false;
     _Destination = tail_ptr->value();
-    Node<T> *pre = tail_ptr->prev_ptr;
+    LinkNode<T> *pre = tail_ptr->prev_ptr;
     if (pre == nullptr)
         head_ptr = pre;
     delete tail_ptr;

@@ -2,7 +2,7 @@
 #define LINK_H
 
 #include <cassert>
-#include "Node.h"
+#include "LinkNode.h"
 typedef int link_size_t;
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -14,81 +14,103 @@ public:
     {
         clear();
     }
-    Node<T> *operator[](link_size_t _Index);
-    void initialize(T _Element);
-    void initialize(Node<T> *_HeadPtr, Node<T> *_TailPtr, link_size_t _Length);
-    void initializeL(T *_Base, link_size_t _Length);
-    void initializeR(T *_Base, link_size_t _Length);
+    LinkNode<T> *operator[](link_size_t _Index);
+    bool initialize(T _Element);
+    void initialize(LinkNode<T> *_HeadPtr, LinkNode<T> *_TailPtr, link_size_t _Length);
+    bool initializeL(T *_Base, link_size_t _Length);
+    bool initializeR(T *_Base, link_size_t _Length);
     void clear(void);
-    Node<T> *head(void) const;
-    Node<T> *tail(void) const;
+    LinkNode<T> *head(void) const;
+    LinkNode<T> *tail(void) const;
     bool empty(void) const;
     link_size_t length(void) const;
 
 protected:
-    Node<T> *head_ptr = nullptr;
-    Node<T> *tail_ptr = nullptr;
+    LinkNode<T> *head_ptr = nullptr;
+    LinkNode<T> *tail_ptr = nullptr;
     link_size_t len = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-Node<T> *Link<T>::operator[](link_size_t _Index)
+LinkNode<T> *Link<T>::operator[](link_size_t _Index)
 {
     assert((_Index < len) && "Error: Index out of range\n");
-    Node<T> *p = head_ptr;
+    LinkNode<T> *p = head_ptr;
     for (link_size_t i = 0; i != _Index; ++i)
         p = p->next_ptr;
     return p;
 }
 
 template <typename T>
-void Link<T>::initialize(T _Element)
+bool Link<T>::initialize(T _Element)
 {
     clear();
-    head_ptr = new Node<T>(_Element);
+    head_ptr = new LinkNode<T>(_Element);
+    if(head_ptr == nullptr)
+        return false;
     tail_ptr = head_ptr;
+    len = 1;
+    return true;
 }
 
 template <typename T>
-void Link<T>::initializeL(T *_Base, link_size_t _Length)
+bool Link<T>::initializeL(T *_Base, link_size_t _Length)
 {
     clear();
-    head_ptr = new Node<T>;
-    Node<T> *p = head_ptr;
+    head_ptr = new LinkNode<T>;
+    if(head_ptr == nullptr)
+        return false;
+
+    LinkNode<T> *p = head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
     {
         if (i != 0)
         {
-            p->next_ptr = new Node<T>;
+            p->next_ptr = new LinkNode<T>;
+            if(p->next_ptr == nullptr)
+            {
+                clear();
+                return false;
+            }
             p = p->next_ptr;
         }
         p->value() = _Base[i];
         ++len;
     }
     tail_ptr = p;
+    return true;
 }
 
 template <typename T>
-void Link<T>::initializeR(T *_Base, link_size_t _Length)
+bool Link<T>::initializeR(T *_Base, link_size_t _Length)
 {
     clear();
-    tail_ptr = new Node<T>;
-    Node<T> *p = tail_ptr;
+    tail_ptr = new LinkNode<T>;
+    if(tail_ptr == nullptr)
+        return false;
+
+    LinkNode<T> *p = tail_ptr;
     for(link_size_t i = 0; i < _Length; ++i)
     {
         if(i != 0)
         {
-            p->prev_ptr = new Node<T>;
+            p->prev_ptr = new LinkNode<T>;
+            if(p->prev_ptr == nullptr)
+            {
+                clear();
+                return false;
+            }
             p = p->prev_ptr;
         }
         p->value() = _Base[i];
         ++len;
     }
     head_ptr = p;
+    return true;
 }
 
 template <typename T>
-void Link<T>::initialize(Node<T> *_HeadPtr, Node<T> *_TailPtr, link_size_t _Length)
+void Link<T>::initialize(LinkNode<T> *_HeadPtr, LinkNode<T> *_TailPtr, link_size_t _Length)
 {
     head_ptr = _HeadPtr;
     tail_ptr = _TailPtr;
@@ -100,7 +122,7 @@ void Link<T>::initialize(Node<T> *_HeadPtr, Node<T> *_TailPtr, link_size_t _Leng
 template <typename T>
 void Link<T>::clear()
 {
-    Node<T> *cur = head_ptr, *next;
+    LinkNode<T> *cur = head_ptr, *next;
     while (len--)
     {
         next = cur->next_ptr;
@@ -118,13 +140,13 @@ bool Link<T>::empty(void) const
     return (len == 0);
 }
 template <typename T>
-Node<T> *Link<T>::head(void) const
+LinkNode<T> *Link<T>::head(void) const
 {
     return head_ptr;
 }
 
 template <typename T>
-Node<T> *Link<T>::tail(void) const
+LinkNode<T> *Link<T>::tail(void) const
 {
     return tail_ptr;
 }

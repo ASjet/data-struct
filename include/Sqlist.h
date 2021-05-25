@@ -1,8 +1,15 @@
 #ifndef SQLIST_H
 #define SQLIST_H
 
+
 #include <iostream>
 #include "Array.h"
+
+template <typename T>
+class Sqlist;
+
+template <typename T>
+std::ostream& operator<<(std::ostream& _Ostream, Sqlist<T> * _Sqlist);
 ////////////////////////////////////////////////////////////////////////////////
 template<typename T>
 class Sqlist : public Array<T>
@@ -12,83 +19,101 @@ class Sqlist : public Array<T>
     Sqlist(array_size_t _Size):Array<T>(_Size){}
     ~Sqlist() = default;
 
-    void disp(void) const;
-    T getElem(array_size_t _Index) const;
+    friend std::ostream& operator<<<T>(std::ostream& _Ostream, Sqlist<T> * _Sqlist);
+    T& operator[](array_size_t _Index);
+
     array_size_t find(T _Element) const;
-    ARRAY_STAT_FLAG insert(array_size_t _Index, T _Element);
-    ARRAY_STAT_FLAG remove(array_size_t _Index);
+    bool insert(array_size_t _Index, T _Element);
+    bool remove(array_size_t _Index);
     using Array<T>::move;
     void unique(void);
 
     private:
-    using Array<T>::size;
-    using Array<T>::len;
-    using Array<T>::base;
-    using Array<T>::tail_i;
+    using Array<T>::_size;
+    using Array<T>::_len;
+    using Array<T>::_base;
+    using Array<T>::_tail;
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-void Sqlist<T>::disp(void) const
+std::ostream& operator<<(std::ostream& _Ostream, Sqlist<T> * _Sqlist)
 {
-    for(array_size_t i = 0; i != len; ++i)
-        std::cout << ((i == 0)? '\0' : ' ') << base[i];
-    std::cout << std::endl;
+    for(array_size_t i = 0; i != _Sqlist->_len; ++i)
+        _Ostream << ((i == 0)? '\0' : ' ') << _Sqlist->_base[i];
+    return _Ostream;
 }
 
+
 template <typename T>
-T Sqlist<T>::getElem(array_size_t _Index) const
+T& Sqlist<T>::operator[](array_size_t _Index)
 {
-    return base[_Index];
+    return _base[_Index];
 }
+
 
 template <typename T>
 array_size_t Sqlist<T>::find(T _Element) const
 {
-    for(array_size_t i = 0; i != len; ++i)
-        if(base[i] == _Element)
+    for(array_size_t i = 0; i != _len; ++i)
+        if(_base[i] == _Element)
             return i;
     return -1;
 }
 
-template <typename T>
-ARRAY_STAT_FLAG Sqlist<T>::insert(array_size_t _Index, T _Element)
-{
-    if((len + 1) > size)
-        return ARR_ERR;
-
-    move(_Index, tail_i, 1);
-    base[_Index] = _Element;
-    ++len;
-    tail_i = (len == 0) ? 0 : len - 1;
-    return ARR_OK;
-}
 
 template <typename T>
-ARRAY_STAT_FLAG Sqlist<T>::remove(array_size_t _Index)
+bool Sqlist<T>::insert(array_size_t _Index, T _Element)
 {
-    if(_Index >= len)
-        return ARR_ERR;
+    if((_len + 1) > _size)
+        return false;
+
+    if(move(_Index, _tail, 1))
+    {
+        _base[_Index] = _Element;
+        ++_len;
+        _tail = (_len == 0) ? 0 : _len - 1;
+        return true;
+    }
     else
-        move(_Index+1, tail_i, -1);
-    --len;
-    tail_i = (len == 0) ? 0 : len - 1;
-    return ARR_OK;
+        return false;
 }
+
+
+template <typename T>
+bool Sqlist<T>::remove(array_size_t _Index)
+{
+    if(_Index >= _len)
+        return false;
+    else
+    {
+        if(move(_Index+1, _tail, -1))
+        {
+            --_len;
+            _tail = (_len == 0) ? 0 : _len - 1;
+            return true;
+        }
+        else
+            return false;
+    }
+}
+
 
 template <typename T>
 void Sqlist<T>::unique(void)
 {
     T cur;
     array_size_t i = 0;
-    while(i < len)
+    while(i < _len)
     {
-        if(i != 0 && cur == base[i])
+        if(i != 0 && cur == _base[i])
         {
-            move(i+1, tail_i, -1);
-            --len;
+            assert(move(i+1, _tail, -1) && "Unexpect error.");
+            --_len;
         }
         else
-            cur = base[i++];
+            cur = _base[i++];
     }
 }
+
+
 #endif

@@ -38,7 +38,7 @@ private:
 template <typename T>
 void CLink<T>::disp(bool _Inverse) const
 {
-    Node<T> *p = head_ptr;
+    LinkNode<T> *p = head_ptr;
     do
     {
         std::cout << ((p == head_ptr) ? '\0' : ' ') << p->value();
@@ -51,7 +51,7 @@ template <typename T>
 void CLink<T>::initialize(T _Element)
 {
     clear();
-    head_ptr = new Node<T>(_Element);
+    head_ptr = new LinkNode<T>(_Element);
     head_ptr->next_ptr = head_ptr;
     head_ptr->prev_ptr = head_ptr;
 }
@@ -60,13 +60,13 @@ template <typename T>
 void CLink<T>::initializeL(T *_Base, link_size_t _Length)
 {
     clear();
-    head_ptr = new Node<T>;
-    Node<T> *p = head_ptr;
+    head_ptr = new LinkNode<T>;
+    LinkNode<T> *p = head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
     {
         if(i != 0)
         {
-            p->prev_ptr = new Node<T>;
+            p->prev_ptr = new LinkNode<T>;
             p->prev_ptr->next_ptr = p;
             p = p->prev_ptr;
         }
@@ -82,13 +82,13 @@ template <typename T>
 void CLink<T>::initializeR(T *_Base, link_size_t _Length)
 {
     clear();
-    head_ptr = new Node<T>;
-    Node<T> *p = head_ptr;
+    head_ptr = new LinkNode<T>;
+    LinkNode<T> *p = head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
     {
         if (i != 0)
         {
-            p->next_ptr = new Node<T>;
+            p->next_ptr = new LinkNode<T>;
             p->next_ptr->prev_ptr = p;
             p = p->next_ptr;
         }
@@ -107,14 +107,14 @@ void CLink<T>::insert(link_size_t _Index, T _Element)
         initialize(_Element);
     else if (_Index == len)
     {
-        head_ptr->prev_ptr->next_ptr = new Node<T>(_Element);
+        head_ptr->prev_ptr->next_ptr = new LinkNode<T>(_Element);
         head_ptr->prev_ptr->next_ptr->next_ptr = head_ptr;
         head_ptr->prev_ptr = head_ptr->prev_ptr->next_ptr;
     }
     else
     {
-        Node<T> *cur = (*this)[_Index];
-        cur->next_ptr->prev_ptr = new Node<T>(_Element);
+        LinkNode<T> *cur = (*this)[_Index];
+        cur->next_ptr->prev_ptr = new LinkNode<T>(_Element);
         cur->next_ptr->prev_ptr->prev_ptr = cur;
         cur->next_ptr = cur->next_ptr->prev_ptr;
         if (cur == head_ptr)
@@ -128,7 +128,7 @@ T CLink<T>::remove(link_size_t _Index)
 {
     assert((_Index < len) && "Error: Index out of range\n");
     T res;
-    Node<T> *p = (*this)[_Index];
+    LinkNode<T> *p = (*this)[_Index];
     res = p->value();
     if (p == head_ptr)
     {
@@ -150,7 +150,7 @@ template <typename T>
 link_size_t CLink<T>::find(T _Element) const
 {
     link_size_t cnt = 0;
-    Node<T> *p = head_ptr;
+    LinkNode<T> *p = head_ptr;
     while (p->value() != _Element)
     {
         p = p->next_ptr;
