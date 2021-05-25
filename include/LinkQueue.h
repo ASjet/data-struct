@@ -19,7 +19,7 @@ class LinkQueue : public Link<T>
         Link<T>::clear();
     }
     using Link<T>::initialize;
-    void push(T _Element);
+    bool push(T _Element);
     bool pop(T &_Destination);
     bool pop(void);
     friend std::ostream& operator<<<>(std::ostream& _Ostream, LinkQueue<T> * _LinkQueue);
@@ -32,7 +32,7 @@ private:
 template <typename T>
 std::ostream& operator<<(std::ostream& _Ostream, LinkQueue<T> * _LinkQueue)
 {
-    Node<T> *p = _LinkQueue->head_ptr;
+    LinkNode<T> *p = _LinkQueue->head_ptr;
     while(p != nullptr)
     {
         _Ostream << ((p == _LinkQueue->head_ptr)?'\0':' ') << p->value();
@@ -42,16 +42,19 @@ std::ostream& operator<<(std::ostream& _Ostream, LinkQueue<T> * _LinkQueue)
 }
 
 template <typename T>
-void LinkQueue<T>::push(T _Element)
+bool LinkQueue<T>::push(T _Element)
 {
     if(len == 0)
-        initialize(_Element);
+        return initialize(_Element);
     else
     {
-        tail_ptr->insert_behind(_Element);
-        tail_ptr = tail_ptr->next_ptr;
+        if(tail_ptr->insert_behind(_Element))
+            tail_ptr = tail_ptr->next_ptr;
+        else
+            return false;
     }
     ++len;
+    return true;
 }
 
 template <typename T>
@@ -59,7 +62,7 @@ bool LinkQueue<T>::pop(void)
 {
     if(len <= 0)
         return false;
-    Node<T> *next = head_ptr->next_ptr;
+    LinkNode<T> *next = head_ptr->next_ptr;
     delete head_ptr;
     head_ptr = next;
     --len;
@@ -72,7 +75,7 @@ bool LinkQueue<T>::pop(T &_Destination)
     if(len <= 0)
         return false;
     _Destination = head_ptr->value();
-    Node<T> *next = head_ptr->next_ptr;
+    LinkNode<T> *next = head_ptr->next_ptr;
     delete head_ptr;
     head_ptr = next;
     --len;
