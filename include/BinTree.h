@@ -30,9 +30,9 @@ public:
     }
 
     void clear(void);
-    bool initializeTable(std::string _Str);
-    bool initializeOrder(T *_Seq, btree_size_t _Length);
-    bool initialize(T *_PreOrder, T *_InOrder, btree_size_t _Length);
+    bool initializeTable(const std::string &_Str);
+    bool initializeOrder(const T *_Seq, btree_size_t _Length);
+    bool initialize(const T *_PreOrder, const T *_InOrder, btree_size_t _Length);
 
     friend std::ostream &operator<<<T>(std::ostream &_Ostream, BinTree<T> *_BinTree);
 
@@ -56,7 +56,7 @@ private:
     void preOrder(LinerLink<T> *_Output, BinNode<T> *_Root) const;
     void inOrder(LinerLink<T> *_Output, BinNode<T> *_Root) const;
     void postOrder(LinerLink<T> *_Output, BinNode<T> *_Root) const;
-    bool initialize(T *_PreOrder, T *_InOrder, btree_size_t _Length, BinNode<T> *_Root);
+    bool initialize(const T *_PreOrder, const T *_InOrder, btree_size_t _Length, BinNode<T> *_Root);
     btree_size_t _size = 0;
     BinNode<T> *_root = nullptr;
 };
@@ -79,9 +79,11 @@ void BinTree<T>::printTable(std::ostringstream &_Str, BinNode<T> *_Root)
         _Str << '(';
         if (_Root->_lnode != nullptr)
             printTable(_Str, _Root->_lnode);
-        _Str << ',';
         if (_Root->_rnode != nullptr)
+        {
+            _Str << ',';
             printTable(_Str, _Root->_rnode);
+        }
         _Str << ')';
     }
 }
@@ -95,7 +97,7 @@ void BinTree<T>::clear(void)
 }
 
 template <typename T>
-bool BinTree<T>::initializeTable(std::string _Str)
+bool BinTree<T>::initializeTable(const std::string &_Str)
 {
     LinkStack<BinNode<T> *> *ls = new LinkStack<BinNode<T> *>;
     if (ls == nullptr)
@@ -106,6 +108,11 @@ bool BinTree<T>::initializeTable(std::string _Str)
     {
         switch (*i)
         {
+        case ' ':
+        case '\t':
+        case '\n':
+        case '\r':
+            break;
         case '(':
             ls->push(p);
             if (*(i + 1) != ',')
@@ -136,11 +143,12 @@ bool BinTree<T>::initializeTable(std::string _Str)
             break;
         }
     }
+    delete ls;
     return true;
 }
 
 template <typename T>
-bool BinTree<T>::initializeOrder(T *_Seq, btree_size_t _Length)
+bool BinTree<T>::initializeOrder(const T *_Seq, btree_size_t _Length)
 {
     if (_Seq == nullptr || _Length < 1)
         return false;
@@ -204,7 +212,7 @@ bool BinTree<T>::initializeOrder(T *_Seq, btree_size_t _Length)
 }
 
 template <typename T>
-bool BinTree<T>::initialize(T *_PreOrder, T *_InOrder, btree_size_t _Length)
+bool BinTree<T>::initialize(const T *_PreOrder, const T *_InOrder, btree_size_t _Length)
 {
     if (_PreOrder == nullptr || _InOrder == nullptr || _Length < 1)
         return false;
@@ -220,9 +228,8 @@ bool BinTree<T>::initialize(T *_PreOrder, T *_InOrder, btree_size_t _Length)
 }
 
 template <typename T>
-bool BinTree<T>::initialize(T *_PreOrder, T *_InOrder, btree_size_t _Length, BinNode<T> *_Root)
+bool BinTree<T>::initialize(const T *_PreOrder, const T *_InOrder, btree_size_t _Length, BinNode<T> *_Root)
 {
-    // std::cout << _PreOrder[0] << '<' << std::endl;
     _Root->value() = _PreOrder[0];
     ++_size;
     if (_Length == 1)
@@ -279,23 +286,6 @@ bool BinTree<T>::initialize(T *_PreOrder, T *_InOrder, btree_size_t _Length, Bin
 template <typename T>
 btree_size_t BinTree<T>::height(void) const
 {
-    // LinkStack<BinNode<T> *> *lnk = new LinkStack<BinNode<T> *>;
-    // if(lnk == nullptr)
-    //     return -1;
-    // btree_size_t height = 1;
-    // BinNode<T> *p = nullptr;
-    // if (_root->_lnode == nullptr && _root->_rnode == nullptr)
-    //     return (height > _size) ? _size : height;
-    // else
-    // {
-    //     p = _root;
-    //     if (_root->_rnode != nullptr)
-    //         lnk->push(_root->_rnode);
-    //     if (_root->_lnode != nullptr)
-    //         p = _root->_lnode;
-    //     height = (lnk->length() > height) ? lnk->length() : height;
-    // }
-    // delete lnk;
     return height(_root);
 }
 
@@ -369,6 +359,7 @@ BinNode<T> *BinTree<T>::root(void) const
 template <typename T>
 void BinTree<T>::preOrder(LinerLink<T> *_Output) const
 {
+    _Output->clear();
     preOrder(_Output, _root);
 }
 
@@ -386,6 +377,7 @@ void BinTree<T>::preOrder(LinerLink<T> *_Output, BinNode<T> *_Root) const
 template <typename T>
 void BinTree<T>::inOrder(LinerLink<T> *_Output) const
 {
+    _Output->clear();
     inOrder(_Output, _root);
 }
 
@@ -403,6 +395,7 @@ void BinTree<T>::inOrder(LinerLink<T> *_Output, BinNode<T> *_Root) const
 template <typename T>
 void BinTree<T>::postOrder(LinerLink<T> *_Output) const
 {
+    _Output->clear();
     postOrder(_Output, _root);
 }
 
@@ -420,6 +413,7 @@ void BinTree<T>::postOrder(LinerLink<T> *_Output, BinNode<T> *_Root) const
 template <typename T>
 void BinTree<T>::levelOrder(LinerLink<T> *_Output) const
 {
+    _Output->clear();
     LinkQueue<BinNode<T> *> *q = new LinkQueue<BinNode<T> *>;
     if (q == nullptr)
         return;
