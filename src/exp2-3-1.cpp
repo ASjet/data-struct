@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 using std::string;
 using std::vector;
-typedef char elem_t;
+using elem_t = char;
 template<typename T>
 LinkNode<T>* SearchLocate(CLink<T> * _CLink, clink_size_t _Index);
 template<typename T>
@@ -21,8 +21,7 @@ int main(void)
     CLink<elem_t> * CL_R = new CLink<elem_t>;
     CL_L->initializeL(arr,5);
     CL_R->initializeR(arr,5);
-    CL_L->disp(0);
-    CL_R->disp(0);
+    cout << CL_L << endl << CL_R << endl;
     delete CL_L;
     delete CL_R;
 
@@ -34,9 +33,9 @@ int main(void)
     LinkNode<int> * p = nullptr;
     CLink<int> * CL = new CLink<int>;
     for(int i = 0; i < n; ++i)
-        CL->insert(CL->length(), i);
+        CL->insert(-1, i);
 
-    CL->disp(0);
+    cout << CL << endl;
     p = SearchLocate(CL, x);
     if(p != nullptr)
         cout << p->value() << endl;
@@ -76,7 +75,7 @@ void addon2(clink_size_t _N, clink_size_t _X, clink_size_t _Y)
 {
     CLink<int> * CL = new CLink<int>;
     for(int i = 0; i < _N; ++i)
-        CL->insert(CL->length(), i);
+        CL->insert(-1, i);
 
     LinkNode<T> * p = CL->head();
     while(p != nullptr)
@@ -94,4 +93,5 @@ void addon2(clink_size_t _N, clink_size_t _X, clink_size_t _Y)
         delete p->next();
     }
     cout << endl;
+    delete CL;
 }

@@ -1,13 +1,14 @@
 #ifndef SHARESTACK_H
 #define SHARESTACK_H
 
+
 #include "Array.h"
 enum STACK_FLAG
 {
     LEFT_STACK,
     RIGHT_STACK
 };
-
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class ShareStack : public Array<T>
 {
@@ -37,8 +38,7 @@ private:
     array_size_t _lenl;
     array_size_t _lenr;
 };
-
-
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void ShareStack<T>::clear(STACK_FLAG _Flag)
 {
@@ -53,6 +53,7 @@ void ShareStack<T>::clear(STACK_FLAG _Flag)
         _lenl = 0;
     }
 }
+
 
 template <typename T>
 bool ShareStack<T>::push(T _Element, STACK_FLAG _Flag)
@@ -75,6 +76,7 @@ bool ShareStack<T>::push(T _Element, STACK_FLAG _Flag)
     return true;
 }
 
+
 template <typename T>
 bool ShareStack<T>::pop(STACK_FLAG _Flag)
 {
@@ -94,6 +96,7 @@ bool ShareStack<T>::pop(STACK_FLAG _Flag)
     return true;
 }
 
+
 template <typename T>
 bool ShareStack<T>::pop(T *_Destination, STACK_FLAG _Flag)
 {
@@ -104,6 +107,7 @@ bool ShareStack<T>::pop(T *_Destination, STACK_FLAG _Flag)
     *_Destination = _base[sp];
     return true;
 }
+
 
 template <typename T>
 bool ShareStack<T>::GetTop(T *_Destination, STACK_FLAG _Flag) const
@@ -118,6 +122,7 @@ bool ShareStack<T>::GetTop(T *_Destination, STACK_FLAG _Flag) const
     return true;
 }
 
+
 template <typename T>
 bool ShareStack<T>::isEmpty(STACK_FLAG _FLAG) const
 {
@@ -125,10 +130,12 @@ bool ShareStack<T>::isEmpty(STACK_FLAG _FLAG) const
     return (len == 0);
 }
 
+
 template <typename T>
 bool ShareStack<T>::isFull(void) const
 {
     return (_spl > _spr);
 }
+
 
 #endif

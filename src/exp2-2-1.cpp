@@ -24,7 +24,7 @@ int main(void)
     cout << A << endl;
     cout << " (4)单链表L长度:" << A->length() << endl;
     cout << " (5)单链表L为" << ((A->empty()) ? "空" : "非空") << endl;
-    cout << " (6)单链表L的第3个元素:" << A->getElem(2) << endl;
+    cout << " (6)单链表L的第3个元素:" << (*A)[2] << endl;
     cout << " (7)元素a的位置:" << A->find('a') + 1 << endl;
     cout << " (8)在第4个元素位置上插入f元素" << endl;
     A->insert(3, 'f');

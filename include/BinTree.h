@@ -9,7 +9,7 @@
 #include "LinkQueue.h"
 #include "LinkStack.h"
 
-typedef int btree_size_t;
+using btree_size_t = int;
 template <typename T>
 class BinTree;
 

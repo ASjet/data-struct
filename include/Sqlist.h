@@ -25,8 +25,8 @@ class Sqlist : public Array<T>
     array_size_t find(T _Element) const;
     bool insert(array_size_t _Index, T _Element);
     bool remove(array_size_t _Index);
-    using Array<T>::move;
     void unique(void);
+    using Array<T>::move;
 
     private:
     using Array<T>::_size;

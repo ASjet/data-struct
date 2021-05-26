@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-////////////////////////////////////////////////////////////////////////////////
+
 template <typename T> class Link;
 template <typename T> class LinerLink;
 template <typename T> class CLink;
@@ -14,24 +14,24 @@ class LinkNode
 public:
     LinkNode()
     {
-        body = new T;
-        next_ptr = nullptr;
-        prev_ptr = nullptr;
+        _body = new T;
+        _next_ptr = nullptr;
+        _prev_ptr = nullptr;
     }
     LinkNode(T _Element)
     {
-        body = new T;
-        *body = _Element;
+        _body = new T;
+        *_body = _Element;
     }
     ~LinkNode()
     {
-        LinkNode<T> * prev = prev_ptr;
-        LinkNode<T> * next = next_ptr;
+        LinkNode<T> * prev = _prev_ptr;
+        LinkNode<T> * next = _next_ptr;
         if(next != nullptr)
-            next->prev_ptr = prev;
+            next->_prev_ptr = prev;
         if(prev != nullptr)
-            prev->next_ptr = next;
-        delete body;
+            prev->_next_ptr = next;
+        delete _body;
     }
     friend class Link<T>;
     friend class LinerLink<T>;
@@ -48,28 +48,31 @@ public:
     T &value(void);
 
 private:
-    LinkNode<T> *next_ptr = nullptr;
-    LinkNode<T> *prev_ptr = nullptr;
-    T *body = nullptr;
+    LinkNode<T> *_next_ptr = nullptr;
+    LinkNode<T> *_prev_ptr = nullptr;
+    T *_body = nullptr;
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 LinkNode<T> *LinkNode<T>::next(void) const
 {
-    return next_ptr;
+    return _next_ptr;
 }
+
 
 template <typename T>
 LinkNode<T> *LinkNode<T>::prev(void) const
 {
-    return prev_ptr;
+    return _prev_ptr;
 }
+
 
 template <typename T>
 T &LinkNode<T>::value(void)
 {
-    return *body;
+    return *_body;
 }
+
 
 template <typename T>
 bool LinkNode<T>::insert_ahead(T _Element)
@@ -78,15 +81,16 @@ bool LinkNode<T>::insert_ahead(T _Element)
     if(p == nullptr)
         return false;
 
-    p->next_ptr = this;
-    if(prev_ptr != nullptr)
+    p->_next_ptr = this;
+    if(_prev_ptr != nullptr)
     {
-        p->prev_ptr = prev_ptr;
-        prev_ptr->next_ptr = p;
+        p->_prev_ptr = _prev_ptr;
+        _prev_ptr->_next_ptr = p;
     }
-    prev_ptr = p;
+    _prev_ptr = p;
     return true;
 }
+
 
 template <typename T>
 bool LinkNode<T>::insert_behind(T _Element)
@@ -94,14 +98,16 @@ bool LinkNode<T>::insert_behind(T _Element)
     LinkNode<T> * p = new LinkNode<T>(_Element);
     if(p == nullptr)
         return false;
-    p->prev_ptr = this;
-    if(next_ptr != nullptr)
+
+    p->_prev_ptr = this;
+    if(_next_ptr != nullptr)
     {
-        p->next_ptr = next_ptr;
-        next_ptr->prev_ptr = p;
+        p->_next_ptr = _next_ptr;
+        _next_ptr->_prev_ptr = p;
     }
-    next_ptr = p;
+    _next_ptr = p;
     return true;
 }
+
 
 #endif
