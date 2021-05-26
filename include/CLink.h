@@ -1,13 +1,17 @@
 #ifndef CLink_H
 #define CLink_H
 
+
 #include <iostream>
 #include "Link.h"
-typedef int clink_size_t;
+using clink_size_t = int;
 
 template <typename T>
 class CLink;
 
+template <typename T>
+std::ostream& operator<<(std::ostream& _Ostream, CLink<T>* _Clink);
+////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class CLink : public Link<T>
 {
@@ -18,145 +22,188 @@ public:
     {
         Link<T>::clear();
     }
+    friend std::ostream& operator<<<T>(std::ostream& _Ostream, CLink<T>* _Clink);
 
-    void initialize(T _Element);
-    void initializeL(T *_Base, link_size_t _Length);
-    void initializeR(T *_Base, link_size_t _Length);
+    bool initialize(T _Element);
+    bool initializeL(T *_Base, link_size_t _Length);
+    bool initializeR(T *_Base, link_size_t _Length);
     using Link<T>::clear;
-    T getElem(link_size_t _Index);
     void disp(bool _Inverse) const;
     link_size_t find(T _Element) const;
-    void insert(link_size_t _Index, T _Element);
+    bool insert(link_size_t _Index, T _Element);
     T remove(link_size_t _Index);
 
 private:
     using Link<T>::tail;
-    using Link<T>::len;
-    using Link<T>::head_ptr;
+    using Link<T>::_len;
+    using Link<T>::_head_ptr;
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 void CLink<T>::disp(bool _Inverse) const
 {
-    LinkNode<T> *p = head_ptr;
+    LinkNode<T> *p = _head_ptr;
     do
     {
-        std::cout << ((p == head_ptr) ? '\0' : ' ') << p->value();
-        p = (_Inverse) ? p->prev_ptr : p->next_ptr;
-    } while (p != head_ptr);
+        std::cout << ((p == _head_ptr) ? '\0' : ' ') << p->value();
+        p = (_Inverse) ? p->_prev_ptr : p->_next_ptr;
+    } while (p != _head_ptr);
     std::cout << std::endl;
 }
 
-template <typename T>
-void CLink<T>::initialize(T _Element)
-{
-    clear();
-    head_ptr = new LinkNode<T>(_Element);
-    head_ptr->next_ptr = head_ptr;
-    head_ptr->prev_ptr = head_ptr;
-}
 
 template <typename T>
-void CLink<T>::initializeL(T *_Base, link_size_t _Length)
+std::ostream& operator<<(std::ostream& _Ostream, CLink<T>* _Clink)
+{
+    LinkNode<T> *p = _Clink->_head_ptr;
+    do
+    {
+        _Ostream << ((p == _Clink->_head_ptr) ? '\0' : ' ') << p->value();
+        p = p->next();
+    } while (p != _Clink->_head_ptr);
+    return _Ostream;
+}
+
+
+template <typename T>
+bool CLink<T>::initialize(T _Element)
 {
     clear();
-    head_ptr = new LinkNode<T>;
-    LinkNode<T> *p = head_ptr;
+    _head_ptr = new LinkNode<T>(_Element);
+    if(_head_ptr == nullptr)
+        return false;
+    _head_ptr->_next_ptr = _head_ptr;
+    _head_ptr->_prev_ptr = _head_ptr;
+    _len = 1;
+    return true;
+}
+
+
+template <typename T>
+bool CLink<T>::initializeL(T *_Base, link_size_t _Length)
+{
+    clear();
+    _head_ptr = new LinkNode<T>;
+    if(_head_ptr == nullptr)
+        return false;
+    LinkNode<T> *p = _head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
     {
         if(i != 0)
         {
-            p->prev_ptr = new LinkNode<T>;
-            p->prev_ptr->next_ptr = p;
-            p = p->prev_ptr;
+            p->_prev_ptr = new LinkNode<T>;
+            if(p->_prev_ptr == nullptr)
+            {
+                clear();
+                return false;
+            }
+            p->_prev_ptr->_next_ptr = p;
+            p = p->_prev_ptr;
         }
-        ++len;
         p->value() = _Base[i];
+        ++_len;
     }
-    p->prev_ptr = head_ptr;
-    head_ptr->next_ptr = p;
-    head_ptr = p;
+    p->_prev_ptr = _head_ptr;
+    _head_ptr->_next_ptr = p;
+    _head_ptr = p;
+    return true;
 }
 
+
 template <typename T>
-void CLink<T>::initializeR(T *_Base, link_size_t _Length)
+bool CLink<T>::initializeR(T *_Base, link_size_t _Length)
 {
     clear();
-    head_ptr = new LinkNode<T>;
-    LinkNode<T> *p = head_ptr;
+    _head_ptr = new LinkNode<T>;
+    if(_head_ptr == nullptr)
+        return false;
+    LinkNode<T> *p = _head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
     {
         if (i != 0)
         {
-            p->next_ptr = new LinkNode<T>;
-            p->next_ptr->prev_ptr = p;
-            p = p->next_ptr;
+            p->_next_ptr = new LinkNode<T>;
+            if(p->_next_ptr == nullptr)
+            {
+                clear();
+                return false;
+            }
+            p->_next_ptr->_prev_ptr = p;
+            p = p->_next_ptr;
         }
-        ++len;
+        ++_len;
         p->value() = _Base[i];
     }
-    p->next_ptr = head_ptr;
-    head_ptr->prev_ptr = p;
+    p->_next_ptr = _head_ptr;
+    _head_ptr->_prev_ptr = p;
+    return true;
 }
 
+
 template <typename T>
-void CLink<T>::insert(link_size_t _Index, T _Element)
+bool CLink<T>::insert(link_size_t _Index, T _Element)
 {
-    assert((_Index <= len) && "Error: Index out of range\n");
-    if (len == 0)
-        initialize(_Element);
-    else if (_Index == len)
+    if (_len == 0)
+        return initialize(_Element);
+    else if (_Index == _len || _Index == -1)
     {
-        head_ptr->prev_ptr->next_ptr = new LinkNode<T>(_Element);
-        head_ptr->prev_ptr->next_ptr->next_ptr = head_ptr;
-        head_ptr->prev_ptr = head_ptr->prev_ptr->next_ptr;
+        _head_ptr->_prev_ptr->_next_ptr = new LinkNode<T>(_Element);
+        if(_head_ptr->_prev_ptr->_next_ptr == nullptr)
+        {
+            _head_ptr->_prev_ptr->_next_ptr = _head_ptr;
+            return false;
+        }
+        _head_ptr->_prev_ptr->_next_ptr->_next_ptr = _head_ptr;
+        _head_ptr->_prev_ptr = _head_ptr->_prev_ptr->_next_ptr;
     }
     else
     {
         LinkNode<T> *cur = (*this)[_Index];
-        cur->next_ptr->prev_ptr = new LinkNode<T>(_Element);
-        cur->next_ptr->prev_ptr->prev_ptr = cur;
-        cur->next_ptr = cur->next_ptr->prev_ptr;
-        if (cur == head_ptr)
-            head_ptr = cur->prev_ptr;
+        cur->_next_ptr->_prev_ptr = new LinkNode<T>(_Element);
+        if(cur->_next_ptr->_prev_ptr == nullptr)
+        {
+            cur->_next_ptr->_prev_ptr = cur;
+            return false;
+        }
+        cur->_next_ptr->_prev_ptr->_prev_ptr = cur;
+        cur->_next_ptr = cur->_next_ptr->_prev_ptr;
+        if (cur == _head_ptr)
+            _head_ptr = cur->_prev_ptr;
     }
-    ++len;
+    ++_len;
+    return true;
 }
+
 
 template <typename T>
 T CLink<T>::remove(link_size_t _Index)
 {
-    assert((_Index < len) && "Error: Index out of range\n");
     T res;
     LinkNode<T> *p = (*this)[_Index];
     res = p->value();
-    if (p == head_ptr)
+    if (p == _head_ptr)
     {
-        head_ptr = p->next_ptr;
-        head_ptr->prev_ptr = p->prev_ptr;
+        _head_ptr = p->_next_ptr;
+        _head_ptr->_prev_ptr = p->_prev_ptr;
     }
     delete p;
-    --len;
+    --_len;
     return res;
 }
 
-template <typename T>
-T CLink<T>::getElem(link_size_t _Index)
-{
-    return (*this)[_Index]->value();
-}
 
 template <typename T>
 link_size_t CLink<T>::find(T _Element) const
 {
     link_size_t cnt = 0;
-    LinkNode<T> *p = head_ptr;
+    LinkNode<T> *p = _head_ptr;
     while (p->value() != _Element)
     {
-        p = p->next_ptr;
+        p = p->_next_ptr;
         ++cnt;
     }
     return cnt;
 }
+
 
 #endif

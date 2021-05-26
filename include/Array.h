@@ -4,8 +4,7 @@
 
 #include <cstring>
 #include <cassert>
-
-typedef int array_size_t;
+using array_size_t = int;
 ////////////////////////////////////////////////////////////////////////////////
 template<typename T>
 class Array

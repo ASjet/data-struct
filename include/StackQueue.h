@@ -2,71 +2,74 @@
 #define STACKQUEUE_H
 
 #include "LinkStack.h"
-
+////////////////////////////////////////////////////////////////////////////////
 template<typename T>
 class StackQueue
 {
     public:
     StackQueue(){
-        s1 = new LinkStack<int>;
-        s2 = new LinkStack<int>;
+        _s1 = new LinkStack<int>;
+        _s2 = new LinkStack<int>;
     }
     ~StackQueue(){
-        delete s1;
-        delete s2;
+        delete _s1;
+        delete _s2;
     }
-    void push(T _Element);
+    bool push(T _Element);
     bool pop(void);
     bool pop(T &_Destination);
     bool empty(void) const;
 
     private:
     void swap(void);
-    link_size_t len = 0;
-    LinkStack<T> * s1, *s2;
+    link_size_t _len = 0;
+    LinkStack<T> * _s1, *_s2;
 };
 ////////////////////////////////////////////////////////////////////////////////
 template<typename T>
 void StackQueue<T>::swap(void)
 {
     T tmp;
-    while(!s1->empty())
+    while(!_s1->empty())
     {
-        s1->pop(tmp);
-        s2->push(tmp);
+        _s1->pop(tmp);
+        _s2->push(tmp);
     }
 }
 
 
 template<typename T>
-void StackQueue<T>::push(T _Element)
+bool StackQueue<T>::push(T _Element)
 {
-    s1->push(_Element);
-    ++len;
+    if(!(_s1->push(_Element)))
+        return false;
+
+    ++_len;
+    return true;
 }
 
 template<typename T>
 bool StackQueue<T>::pop(void)
 {
-    if(s2->empty())
+    if(_s2->empty())
         swap();
-    --len;
-    return s2->pop();
+    --_len;
+    return _s2->pop();
 }
 
 template<typename T>
 bool StackQueue<T>::pop(T &_Destination)
 {
-    if(s2->empty())
+    if(_s2->empty())
         swap();
-    --len;
-    return s2->pop(_Destination);
+    --_len;
+    return _s2->pop(_Destination);
 }
 
 template<typename T>
 bool StackQueue<T>::empty(void) const
 {
-    return (len == 0);
+    return (_len == 0);
 }
 
 
