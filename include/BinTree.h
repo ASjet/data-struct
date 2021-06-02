@@ -46,7 +46,6 @@ public:
     void postOrder(LinerLink<T> *_Output) const;
     void levelOrder(LinerLink<T> *_Output) const;
 
-    bool insert(T _Element);
     bool remove(T _Element);
     BinNode<T> *find(const T _Element) const;
 
@@ -64,6 +63,8 @@ private:
 template <typename T>
 std::ostream &operator<<(std::ostream &_Ostream, BinTree<T> *_BinTree)
 {
+    if(_BinTree->_root == nullptr || _BinTree == nullptr)
+        return _Ostream;
     std::ostringstream str;
     _BinTree->printTable(str, _BinTree->_root);
     _Ostream << str.str();
@@ -336,6 +337,19 @@ BinNode<T> *BinTree<T>::find(const T _Element) const
     }
     delete q;
     return nullptr;
+}
+
+template<typename T>
+bool BinTree<T>::remove(T _Element)
+{
+    BinNode<T> * target = find(_Element);
+    if(target == nullptr)
+        return false;
+    else if(target == _root)
+        clear();
+    else
+        delete target;
+    return true;
 }
 
 template <typename T>
