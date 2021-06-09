@@ -1,7 +1,15 @@
 #ifndef EDGENODE_H
 #define EDGENODE_H
 
+template <typename W, typename E>
+class EdgeNode;
+
 #include "VertexNode.h"
+
+template <typename W, typename E>
+class GraphLnk;
+template <typename W, typename E>
+std::ostream& operator<<(std::ostream& _Ostream, GraphLnk<W, E> _GraphLnk);
 
 template <typename W, typename E>
 class EdgeNode
@@ -14,7 +22,8 @@ class EdgeNode
         _out = _Out;
         _weight = _Weight;
         _prev = _Prev;
-        _prev->_next = this;
+        if(_prev != nullptr)
+            _prev->_next = this;
     }
     ~EdgeNode()
     {
@@ -23,6 +32,8 @@ class EdgeNode
         if(_next != nullptr)
             _next->_prev = _prev;
     }
+    friend std::ostream& operator<<<>(std::ostream& _Ostream, GraphLnk<W, E> _GraphLnk);
+    friend class VertexNode<W, E>;
     private:
     VertexNode<W, E> * _in = nullptr;
     VertexNode<W, E> * _out = nullptr;

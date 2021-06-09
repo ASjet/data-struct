@@ -14,14 +14,14 @@ template <typename W, typename E>
 std::ostream& operator<<(std::ostream& _Ostream, GraphLnk<W, E> _GraphLnk);
 
 template <typename W, typename E>
-class GraphLnk : public Graph
+class GraphLnk
 {
     public:
     GraphLnk() = default;
     GraphLnk(W ** _EdgeMat, E * _Elements, graph_size_t _VertexCount, graph_size_t _EdgeCount)
     {
         _vc = _VertexCount;
-        _ev = _EdgeCount;
+        _ec = _EdgeCount;
         VertexNode<W ,E> * p = nullptr;
         for(graph_size_t i = 0; i < _vc; ++i)
         {
@@ -33,10 +33,21 @@ class GraphLnk : public Graph
         p = _head;
         for(graph_size_t i = 0; i < _vc; ++i)
         {
-            p->setNeighbor(_head, _EdgeMat[i], _vc);
+            p->setNeighbor(_head, (E*)_EdgeMat + i*_vc, _vc);
             p = p->_next;
         }
     }
+    ~GraphLnk(){
+        VertexNode<W, E> * cur = _head, *next = nullptr;
+        while(cur != nullptr)
+        {
+            next = cur->_next;
+            delete cur;
+            cur = next;
+        }
+    }
+    friend std::ostream& operator<<<>(std::ostream& _Ostream, GraphLnk<W, E> _GraphLnk);
+
     private:
     graph_size_t _vc = 0;
     graph_size_t _ec = 0;
@@ -58,6 +69,7 @@ std::ostream& operator<<(std::ostream& _Ostream, GraphLnk<W, E> _GraphLnk)
             e = e->_next;
         }
         _Ostream << '^' << std::endl;
+        p = p->_next;
     }
     return _Ostream;
 }
