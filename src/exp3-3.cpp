@@ -22,7 +22,7 @@ int main(void)
     {
         cout << "\t   进队" << i << endl;
         cq->push(i);
-        cout << "\t   当前队列元素: " << cq << endl;
+        cout << "\t   当前队列元素: " << *cq << endl;
     }
     cout << "\t(3)队列为" << ((cq->empty()) ? "空" : "非空") << endl;
     elem_t e;
@@ -55,8 +55,8 @@ void addon(void)
         cin >> e;
         cq->push(e);
     }
-    cout << "排序前队列元素: " << cq << endl;
+    cout << "排序前队列元素: " << *cq << endl;
     cq->sort(comp);
-    cout << "排序后队列元素: " << cq << endl;
+    cout << "排序后队列元素: " << *cq << endl;
     delete cq;
 }

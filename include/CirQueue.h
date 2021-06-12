@@ -9,7 +9,7 @@ template<typename T>
 class CirQueue;
 
 template<typename T>
-std::ostream& operator<<(std::ostream& _Ostream, CirQueue<T> * _CirQueue);
+std::ostream& operator<<(std::ostream& _Ostream, CirQueue<T> & _CirQueue);
 //////////////////////////////////////////////////////////////
 template <typename T>
 class CirQueue : public Array<T>
@@ -22,7 +22,7 @@ public:
     bool pop(void);
     bool empty(void) const;
     void sort(bool (*comp)(T, T));
-    friend std::ostream& operator<<<>(std::ostream& _Ostream, CirQueue<T> * _CirQueue);
+    friend std::ostream& operator<<<>(std::ostream& _Ostream, CirQueue<T> & _CirQueue);
 private:
     using Array<T>::_len;
     using Array<T>::_base;
@@ -32,11 +32,15 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-std::ostream& operator<<(std::ostream& _Ostream, CirQueue<T> * _CirQueue)
+std::ostream& operator<<(std::ostream& _Ostream, CirQueue<T> & _CirQueue)
 {
-    for(array_size_t cnt = 0, i = _CirQueue->_head; cnt < _CirQueue->_len; ++cnt, ++i %= _CirQueue->_size)
+    array_size_t length = _CirQueue._len;
+    array_size_t head = _CirQueue._head;
+    array_size_t size = _CirQueue._size;
+    T * base = _CirQueue._base;
+    for(array_size_t cnt = 0, i = head; cnt < length; ++cnt, ++i %= size)
     {
-        _Ostream << ((i == _CirQueue->_head)?'\0':' ') << _CirQueue->_base[i];
+        _Ostream << ((i == head)?'\0':' ') << base[i];
     }
     return _Ostream;
 }

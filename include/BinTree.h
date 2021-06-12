@@ -14,7 +14,7 @@ template <typename T>
 class BinTree;
 
 template <typename T>
-std::ostream &operator<<(std::ostream &_Ostream, BinTree<T> *_BinTree);
+std::ostream &operator<<(std::ostream &_Ostream, BinTree<T> &_BinTree);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class BinTree
@@ -34,7 +34,7 @@ public:
     bool initializeOrder(const T *_Seq, btree_size_t _Length);
     bool initialize(const T *_PreOrder, const T *_InOrder, btree_size_t _Length);
 
-    friend std::ostream &operator<<<T>(std::ostream &_Ostream, BinTree<T> *_BinTree);
+    friend std::ostream &operator<<<T>(std::ostream &_Ostream, BinTree<T> &_BinTree);
 
     btree_size_t height(void) const;
     btree_size_t size(void) const;
@@ -61,12 +61,13 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-std::ostream &operator<<(std::ostream &_Ostream, BinTree<T> *_BinTree)
+std::ostream &operator<<(std::ostream &_Ostream, BinTree<T> &_BinTree)
 {
-    if(_BinTree->_root == nullptr || _BinTree == nullptr)
+    BinNode<T> * root = _BinTree._root;
+    if(root == nullptr)
         return _Ostream;
     std::ostringstream str;
-    _BinTree->printTable(str, _BinTree->_root);
+    _BinTree.printTable(str, root);
     _Ostream << str.str();
     return _Ostream;
 }

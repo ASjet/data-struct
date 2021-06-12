@@ -9,7 +9,7 @@ template <typename T>
 class Sqlist;
 
 template <typename T>
-std::ostream& operator<<(std::ostream& _Ostream, Sqlist<T> * _Sqlist);
+std::ostream& operator<<(std::ostream& _Ostream, Sqlist<T> & _Sqlist);
 ////////////////////////////////////////////////////////////////////////////////
 template<typename T>
 class Sqlist : public Array<T>
@@ -19,7 +19,7 @@ class Sqlist : public Array<T>
     Sqlist(array_size_t _Size):Array<T>(_Size){}
     ~Sqlist() = default;
 
-    friend std::ostream& operator<<<T>(std::ostream& _Ostream, Sqlist<T> * _Sqlist);
+    friend std::ostream& operator<<<T>(std::ostream& _Ostream, Sqlist<T> & _Sqlist);
     T& operator[](array_size_t _Index);
 
     array_size_t find(T _Element) const;
@@ -36,10 +36,12 @@ class Sqlist : public Array<T>
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-std::ostream& operator<<(std::ostream& _Ostream, Sqlist<T> * _Sqlist)
+std::ostream& operator<<(std::ostream& _Ostream, Sqlist<T> & _Sqlist)
 {
-    for(array_size_t i = 0; i != _Sqlist->_len; ++i)
-        _Ostream << ((i == 0)? '\0' : ' ') << _Sqlist->_base[i];
+    array_size_t length = _Sqlist._len;
+    T * base = _Sqlist._base;
+    for(array_size_t i = 0; i != length; ++i)
+        _Ostream << ((i == 0)? '\0' : ' ') << base[i];
     return _Ostream;
 }
 

@@ -21,7 +21,7 @@ int main(void)
     CLink<elem_t> * CL_R = new CLink<elem_t>;
     CL_L->initializeL(arr,5);
     CL_R->initializeR(arr,5);
-    cout << CL_L << endl << CL_R << endl;
+    cout << *CL_L << endl << *CL_R << endl;
     delete CL_L;
     delete CL_R;
 
@@ -35,7 +35,7 @@ int main(void)
     for(int i = 0; i < n; ++i)
         CL->insert(-1, i);
 
-    cout << CL << endl;
+    cout << *CL << endl;
     p = SearchLocate(CL, x);
     if(p != nullptr)
         cout << p->value() << endl;
