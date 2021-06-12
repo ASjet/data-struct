@@ -9,7 +9,7 @@ class EdgeNode;
 template <typename W, typename E>
 class GraphLnk;
 template <typename W, typename E>
-std::ostream& operator<<(std::ostream& _Ostream, GraphLnk<W, E> _GraphLnk);
+std::ostream& operator<<(std::ostream& _Ostream, GraphLnk<W, E>& _GraphLnk);
 
 template <typename W, typename E>
 class EdgeNode
@@ -32,8 +32,10 @@ class EdgeNode
         if(_next != nullptr)
             _next->_prev = _prev;
     }
-    friend std::ostream& operator<<<>(std::ostream& _Ostream, GraphLnk<W, E> _GraphLnk);
+    friend std::ostream& operator<<<>(std::ostream& _Ostream, GraphLnk<W, E>& _GraphLnk);
     friend class VertexNode<W, E>;
+    VertexNode<W, E> * out(void) const;
+    W weight(void) const;
     private:
     VertexNode<W, E> * _in = nullptr;
     VertexNode<W, E> * _out = nullptr;
@@ -41,6 +43,21 @@ class EdgeNode
     EdgeNode<W, E> * _next = nullptr;
     E _weight;
 };
+
+
+template <typename W, typename E>
+VertexNode<W,E> * EdgeNode<W, E>::out(void) const
+{
+    return _out;
+}
+
+
+template <typename W, typename E>
+W EdgeNode<W, E>::weight(void) const
+{
+    return _weight;
+}
+
 
 
 #endif
