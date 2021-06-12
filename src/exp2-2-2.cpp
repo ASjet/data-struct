@@ -16,7 +16,7 @@ int main(void)
         LF->insert(0,i);
         LR->insert(LR->length(),i);
     }
-    cout << LF << endl << LR << endl;
+    cout << *LF << endl << *LR << endl;
     delete LF;
     delete LR;
     return 0;

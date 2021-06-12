@@ -23,11 +23,16 @@ int main(void)
     graph_size_t ec = 10;
     graph_size_t vc = MAXV;
     elem_t E[MAXV] = {0, 1, 2, 3, 4, 5};
-    // GraphMat<weight_t, elem_t> gm((weight_t**)A, E, vc, ec);
-    // cout << gm << endl;
-    // GraphLnk<weight_t, elem_t> gl((weight_t**)A, E, vc, ec);
-    GraphLnk<weight_t, elem_t> * gl = new GraphLnk<weight_t, elem_t>((weight_t**)A, E, vc, ec);
-    cout << *gl << endl;
-    // delete gl;
+
+    GraphMat<weight_t, elem_t> * gm1 = new GraphMat<weight_t, elem_t>((weight_t**)A, E, vc, ec);
+    GraphLnk<weight_t, elem_t> * gl1 = new GraphLnk<weight_t, elem_t>((weight_t**)A, E, vc, ec);
+    GraphMat<weight_t, elem_t> gm2(*gl1);
+    GraphLnk<weight_t, elem_t> gl2(*gm1);
+    cout << *gm1 << endl;
+    cout << gm2 << endl;
+    cout << *gl1 << endl;
+    cout << gl2 << endl;
+    delete gl1;
+    delete gm1;
     return 0;
 }

@@ -9,7 +9,7 @@ template <typename T>
 class LinkQueue;
 
 template <typename T>
-std::ostream &operator<<(std::ostream &_Ostream, LinkQueue<T> *_LinkQueue);
+std::ostream &operator<<(std::ostream &_Ostream, LinkQueue<T> &_LinkQueue);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class LinkQueue : public Link<T>
@@ -24,7 +24,7 @@ public:
     bool push(T _Element);
     bool pop(T &_Destination);
     bool pop(void);
-    friend std::ostream &operator<<<T>(std::ostream &_Ostream, LinkQueue<T> *_LinkQueue);
+    friend std::ostream &operator<<<T>(std::ostream &_Ostream, LinkQueue<T> &_LinkQueue);
 
 private:
     using Link<T>::_len;
@@ -33,14 +33,11 @@ private:
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-std::ostream &operator<<(std::ostream &_Ostream, LinkQueue<T> *_LinkQueue)
+std::ostream &operator<<(std::ostream &_Ostream, LinkQueue<T> &_LinkQueue)
 {
-    LinkNode<T> *p = _LinkQueue->_head_ptr;
-    while (p != nullptr)
-    {
-        _Ostream << ((p == _LinkQueue->_head_ptr) ? '\0' : ' ') << p->value();
-        p = p->next();
-    }
+    LinkNode<T> *head = _LinkQueue._head_ptr;
+    for(LinkNode<T>* p = head; p != nullptr; p->next())
+        _Ostream << ((p == head) ? '\0' : ' ') << p->value();
     return _Ostream;
 }
 

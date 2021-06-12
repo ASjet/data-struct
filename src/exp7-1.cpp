@@ -20,7 +20,7 @@ int main(void)
     BinTree<elem_t> * bt = new BinTree<elem_t>;
     BinNode<elem_t> * p;
     bt->initializeTable(str);
-    cout << "\t(2)输出二叉树:" << bt << endl;
+    cout << "\t(2)输出二叉树:" << *bt << endl;
     p = bt->find('H');
     cout << "\t(3)H节点:左孩子为" << p->lnode()->value()
          << " 右孩子为" << p->rnode()->value() << endl;

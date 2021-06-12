@@ -1,7 +1,6 @@
 #ifndef CLink_H
 #define CLink_H
 
-
 #include <iostream>
 #include "Link.h"
 using clink_size_t = int;
@@ -10,7 +9,7 @@ template <typename T>
 class CLink;
 
 template <typename T>
-std::ostream& operator<<(std::ostream& _Ostream, CLink<T>* _Clink);
+std::ostream &operator<<(std::ostream &_Ostream, CLink<T> &_Clink);
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
 class CLink : public Link<T>
@@ -22,7 +21,7 @@ public:
     {
         Link<T>::clear();
     }
-    friend std::ostream& operator<<<T>(std::ostream& _Ostream, CLink<T>* _Clink);
+    friend std::ostream &operator<<<T>(std::ostream &_Ostream, CLink<T> &_Clink);
 
     bool initialize(T _Element);
     bool initializeL(T *_Base, link_size_t _Length);
@@ -42,35 +41,35 @@ private:
 template <typename T>
 void CLink<T>::disp(bool _Inverse) const
 {
-    LinkNode<T> *p = _head_ptr;
+    LinkNode<T> *head = _head_ptr;
+    LinkNode<T> *p = head;
     do
     {
         std::cout << ((p == _head_ptr) ? '\0' : ' ') << p->value();
         p = (_Inverse) ? p->_prev_ptr : p->_next_ptr;
-    } while (p != _head_ptr);
+    }while(p != head);
     std::cout << std::endl;
 }
 
-
 template <typename T>
-std::ostream& operator<<(std::ostream& _Ostream, CLink<T>* _Clink)
+std::ostream &operator<<(std::ostream &_Ostream, CLink<T> &_Clink)
 {
-    LinkNode<T> *p = _Clink->_head_ptr;
+    LinkNode<T> *head = _Clink._head_ptr;
+    LinkNode<T> *p = head;
     do
     {
-        _Ostream << ((p == _Clink->_head_ptr) ? '\0' : ' ') << p->value();
+        _Ostream << ((p == head) ? '\0' : ' ') << p->value();
         p = p->next();
-    } while (p != _Clink->_head_ptr);
+    } while (p != head);
     return _Ostream;
 }
-
 
 template <typename T>
 bool CLink<T>::initialize(T _Element)
 {
     clear();
     _head_ptr = new LinkNode<T>(_Element);
-    if(_head_ptr == nullptr)
+    if (_head_ptr == nullptr)
         return false;
     _head_ptr->_next_ptr = _head_ptr;
     _head_ptr->_prev_ptr = _head_ptr;
@@ -78,21 +77,20 @@ bool CLink<T>::initialize(T _Element)
     return true;
 }
 
-
 template <typename T>
 bool CLink<T>::initializeL(T *_Base, link_size_t _Length)
 {
     clear();
     _head_ptr = new LinkNode<T>;
-    if(_head_ptr == nullptr)
+    if (_head_ptr == nullptr)
         return false;
     LinkNode<T> *p = _head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
     {
-        if(i != 0)
+        if (i != 0)
         {
             p->_prev_ptr = new LinkNode<T>;
-            if(p->_prev_ptr == nullptr)
+            if (p->_prev_ptr == nullptr)
             {
                 clear();
                 return false;
@@ -109,13 +107,12 @@ bool CLink<T>::initializeL(T *_Base, link_size_t _Length)
     return true;
 }
 
-
 template <typename T>
 bool CLink<T>::initializeR(T *_Base, link_size_t _Length)
 {
     clear();
     _head_ptr = new LinkNode<T>;
-    if(_head_ptr == nullptr)
+    if (_head_ptr == nullptr)
         return false;
     LinkNode<T> *p = _head_ptr;
     for (link_size_t i = 0; i < _Length; ++i)
@@ -123,7 +120,7 @@ bool CLink<T>::initializeR(T *_Base, link_size_t _Length)
         if (i != 0)
         {
             p->_next_ptr = new LinkNode<T>;
-            if(p->_next_ptr == nullptr)
+            if (p->_next_ptr == nullptr)
             {
                 clear();
                 return false;
@@ -139,7 +136,6 @@ bool CLink<T>::initializeR(T *_Base, link_size_t _Length)
     return true;
 }
 
-
 template <typename T>
 bool CLink<T>::insert(link_size_t _Index, T _Element)
 {
@@ -148,7 +144,7 @@ bool CLink<T>::insert(link_size_t _Index, T _Element)
     else if (_Index == _len || _Index == -1)
     {
         _head_ptr->_prev_ptr->_next_ptr = new LinkNode<T>(_Element);
-        if(_head_ptr->_prev_ptr->_next_ptr == nullptr)
+        if (_head_ptr->_prev_ptr->_next_ptr == nullptr)
         {
             _head_ptr->_prev_ptr->_next_ptr = _head_ptr;
             return false;
@@ -160,7 +156,7 @@ bool CLink<T>::insert(link_size_t _Index, T _Element)
     {
         LinkNode<T> *cur = (*this)[_Index];
         cur->_next_ptr->_prev_ptr = new LinkNode<T>(_Element);
-        if(cur->_next_ptr->_prev_ptr == nullptr)
+        if (cur->_next_ptr->_prev_ptr == nullptr)
         {
             cur->_next_ptr->_prev_ptr = cur;
             return false;
@@ -173,7 +169,6 @@ bool CLink<T>::insert(link_size_t _Index, T _Element)
     ++_len;
     return true;
 }
-
 
 template <typename T>
 T CLink<T>::remove(link_size_t _Index)
@@ -191,7 +186,6 @@ T CLink<T>::remove(link_size_t _Index)
     return res;
 }
 
-
 template <typename T>
 link_size_t CLink<T>::find(T _Element) const
 {
@@ -204,6 +198,5 @@ link_size_t CLink<T>::find(T _Element) const
     }
     return cnt;
 }
-
 
 #endif
