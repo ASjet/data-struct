@@ -9,6 +9,9 @@ class VertexNode;
 template <typename W, typename E>
 class GraphLnk;
 template <typename W, typename E>
+class GraphMat;
+
+template <typename W, typename E>
 std::ostream& operator<<(std::ostream& _Ostream, GraphLnk<W, E>& _GraphLnk);
 template <typename W, typename E>
 class VertexNode
@@ -46,6 +49,7 @@ public:
     VertexNode<W, E> *nextNeibor(void);
     EdgeNode<W, E> * findEdgeNode(E _Vertex);
     bool addNeibor(VertexNode<W, E>* _Out, W _Weight);
+    bool haveNeibor(VertexNode<W, E>* _Out);
     E value(void) const;
 
 private:
@@ -140,6 +144,16 @@ bool VertexNode<W, E>::addNeibor(VertexNode<W, E>* _Out, W _Weight)
         return false;
     _edge_tail = p;
     return true;
+}
+
+
+template <typename W, typename E>
+bool VertexNode<W, E>::haveNeibor(VertexNode<W, E>* _Out)
+{
+    for(EdgeNode<W, E> * p = _edge_head; p != nullptr; p = p->_next)
+        if(p->_out == _Out)
+            return true;
+    return false;
 }
 
 

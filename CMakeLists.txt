@@ -75,6 +75,11 @@ add_executable(
     src/exp8-1.cpp
 )
 
+add_executable(
+    exp8-2
+    src/exp8-2.cpp
+)
+
 # SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_C_COMPILER "gcc")

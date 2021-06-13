@@ -35,10 +35,21 @@ protected:
 template <typename T>
 LinkNode<T> *Link<T>::operator[](link_size_t _Index)
 {
-    assert((_Index < _len) && "Error: Index out of range\n");
-    LinkNode<T> *p = _head_ptr;
-    for (link_size_t i = 0; i != _Index; ++i)
-        p = p->_next_ptr;
+    LinkNode<T> *p = nullptr;
+    if(_Index >= 0)
+    {
+        assert((_Index < _len) && "Error: Index out of range\n");
+        p = _head_ptr;
+        for (link_size_t i = 0; i < _Index; ++i)
+            p = p->_next_ptr;
+    }
+    else
+    {
+        assert((-_Index <= _len) && "Error: Index out of range\n");
+        p = _tail_ptr;
+        for(link_size_t i = _Index; i < -1; ++i)
+            p = p->_prev_ptr;
+    }
     return p;
 }
 

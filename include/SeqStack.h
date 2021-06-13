@@ -21,14 +21,14 @@ class SeqStack : public Array<T>
 
     bool push(T _Element);
     bool pop(void);
-    bool pop(T * _Destination);
-    bool GetTop(T *_Destination) const;
+    bool pop(T & _Destination);
+    bool GetTop(T &_Destination) const;
 
     private:
     using Array<T>::_len;
     using Array<T>::_base;
     using Array<T>::_size;
-    array_size_t _sp;
+    array_size_t _sp = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////
 template<typename T>
@@ -55,23 +55,23 @@ bool SeqStack<T>::pop(void)
 
 
 template <typename T>
-bool SeqStack<T>::pop(T * _Destination)
+bool SeqStack<T>::pop(T & _Destination)
 {
     if(_len <= 0)
         return false;
     --_sp;
-    *_Destination = _base[_sp];
+    _Destination = _base[_sp];
     --_len;
     return true;
 }
 
 
 template<typename T>
-bool SeqStack<T>::GetTop(T* _Destination) const
+bool SeqStack<T>::GetTop(T& _Destination) const
 {
     if(_len <= 0)
         return false;
-    *_Destination = _base[_sp];
+    _Destination = _base[_sp];
     return true;
 }
 
