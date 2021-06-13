@@ -2,6 +2,7 @@
 #define GRAPH_H
 
 
+#define INF -1
 using graph_size_t = int;
 
 
@@ -18,6 +19,8 @@ class Graph
     virtual bool getWeight() const = 0;
     virtual bool getFirstNeibor()= 0;
     virtual bool getNextNeibor()= 0;
+    virtual void DFS() = 0;
+    virtual void BFS() = 0;
 };
 
 #endif
