@@ -25,7 +25,7 @@ public:
 
     link_size_t find(T _Element) const;
     bool insert(link_size_t _Index, T _Element);
-    T remove(link_size_t _Index);
+    bool remove(link_size_t _Index);
 
 private:
     using Link<T>::_len;
@@ -46,42 +46,58 @@ std::ostream &operator<<(std::ostream &_Ostream, LinerLink<T> &_LinerLink)
 template <typename T>
 bool LinerLink<T>::insert(link_size_t _Index, T _Element)
 {
-    if (_Index > _len || _Index < -1)
-        return false;
-
     if (_len == 0)
         return Link<T>::initialize(_Element);
-    else if (_Index == _len || _Index == -1)
+    LinkNode<T> * p = nullptr;
+    if (_Index >= 0)
     {
-        if (_tail_ptr->insert_behind(_Element) == false)
+        if (_Index >= _len)
             return false;
-        _tail_ptr = _tail_ptr->_next_ptr;
+        p = (*this)[_Index];
+        if (p == nullptr || p->insert_ahead(_Element) == false)
+            return false;
+        if (p == _head_ptr)
+            _head_ptr = p->_prev_ptr;
     }
     else
     {
-        LinkNode<T> *cur = (*this)[_Index];
-        if (cur->insert_ahead(_Element) == false)
+        if (-_Index > _len)
             return false;
-        if (cur == _head_ptr)
-            _head_ptr = cur->_prev_ptr;
+        p = (*this)[_Index];
+        if(p == nullptr || p->insert_behind(_Element) == false)
+            return false;
+        if(p == _tail_ptr)
+            _tail_ptr = p->_next_ptr;
     }
     ++_len;
     return true;
 }
 
 template <typename T>
-T LinerLink<T>::remove(link_size_t _Index)
+bool LinerLink<T>::remove(link_size_t _Index)
 {
-    T res;
-    LinkNode<T> *p = (*this)[_Index];
-    res = p->value();
-    if (p == _head_ptr)
-        _head_ptr = p->_next_ptr;
-    if (p == _tail_ptr)
-        _tail_ptr = p->_prev_ptr;
+    if(_len == 0)
+        return false;
+    LinkNode<T> *p = nullptr;
+    if (_Index >= 0)
+    {
+        if (_Index > _len)
+            return false;
+        p = (*this)[_Index];
+        if (p == _head_ptr)
+            _head_ptr = p->_next_ptr;
+    }
+    else
+    {
+        if (-_Index > _len + 1)
+            return false;
+        p = (*this)[_Index];
+        if(p == _tail_ptr)
+            _tail_ptr = p->_prev_ptr;
+    }
     delete p;
     --_len;
-    return res;
+    return true;
 }
 
 template <typename T>
@@ -89,7 +105,7 @@ link_size_t LinerLink<T>::find(T _Element) const
 {
     link_size_t cnt = 0;
     LinkNode<T> *p = _head_ptr;
-    while (p->value() != _Element)
+    while (p != nullptr && p->value() != _Element)
     {
         p = p->_next_ptr;
         ++cnt;

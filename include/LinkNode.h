@@ -12,16 +12,10 @@ template <typename T>
 class LinkNode
 {
 public:
-    LinkNode()
-    {
-        _body = new T;
-        _next_ptr = nullptr;
-        _prev_ptr = nullptr;
-    }
+    LinkNode() = default;
     LinkNode(T _Element)
     {
-        _body = new T;
-        *_body = _Element;
+        _body = _Element;
     }
     ~LinkNode()
     {
@@ -31,7 +25,6 @@ public:
             next->_prev_ptr = prev;
         if(prev != nullptr)
             prev->_next_ptr = next;
-        delete _body;
     }
     friend class Link<T>;
     friend class LinerLink<T>;
@@ -50,7 +43,7 @@ public:
 private:
     LinkNode<T> *_next_ptr = nullptr;
     LinkNode<T> *_prev_ptr = nullptr;
-    T *_body = nullptr;
+    T _body = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////
 template <typename T>
@@ -70,7 +63,7 @@ LinkNode<T> *LinkNode<T>::prev(void) const
 template <typename T>
 T &LinkNode<T>::value(void)
 {
-    return *_body;
+    return _body;
 }
 
 
@@ -82,11 +75,9 @@ bool LinkNode<T>::insert_ahead(T _Element)
         return false;
 
     p->_next_ptr = this;
+    p->_prev_ptr = _prev_ptr;
     if(_prev_ptr != nullptr)
-    {
-        p->_prev_ptr = _prev_ptr;
         _prev_ptr->_next_ptr = p;
-    }
     _prev_ptr = p;
     return true;
 }
@@ -100,11 +91,9 @@ bool LinkNode<T>::insert_behind(T _Element)
         return false;
 
     p->_prev_ptr = this;
+    p->_next_ptr =_next_ptr;
     if(_next_ptr != nullptr)
-    {
-        p->_next_ptr = _next_ptr;
         _next_ptr->_prev_ptr = p;
-    }
     _next_ptr = p;
     return true;
 }

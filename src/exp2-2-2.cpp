@@ -14,7 +14,7 @@ int main(void)
     for(link_size_t i = 0; i != 10; ++i)
     {
         LF->insert(0,i);
-        LR->insert(LR->length(),i);
+        LR->insert(-1,i);
     }
     cout << *LF << endl << *LR << endl;
     delete LF;
