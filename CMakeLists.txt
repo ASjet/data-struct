@@ -7,7 +7,7 @@ include_directories(
 )
 
 add_executable(
-    ${PROJECT_NAME}
+    main
     src/main.cpp
 )
 

@@ -81,18 +81,20 @@ bool Link<T>::initializeL(T *_Base, link_size_t _Length)
     {
         if (i != 0)
         {
-            p->_next_ptr = new LinkNode<T>;
-            if(p->_next_ptr == nullptr)
+            p->_prev_ptr = new LinkNode<T>;
+            if(p->_prev_ptr == nullptr)
             {
                 clear();
                 return false;
             }
-            p = p->_next_ptr;
+            p->_prev_ptr->_next_ptr = p;
+            p = p->_prev_ptr;
         }
-        p->value() = _Base[i];
+        p->_body = _Base[i];
         ++_len;
     }
-    _tail_ptr = p;
+    _tail_ptr = _head_ptr;
+    _head_ptr = p;
     return true;
 }
 
@@ -104,24 +106,26 @@ bool Link<T>::initializeR(T *_Base, link_size_t _Length)
     _tail_ptr = new LinkNode<T>;
     if(_tail_ptr == nullptr)
         return false;
+    _head_ptr = _tail_ptr;
 
     LinkNode<T> *p = _tail_ptr;
     for(link_size_t i = 0; i < _Length; ++i)
     {
         if(i != 0)
         {
-            p->_prev_ptr = new LinkNode<T>;
-            if(p->_prev_ptr == nullptr)
+            p->_next_ptr = new LinkNode<T>;
+            if(p->_next_ptr == nullptr)
             {
                 clear();
                 return false;
             }
-            p = p->_prev_ptr;
+            p->_next_ptr->_prev_ptr = p;
+            p = p->_next_ptr;
         }
-        p->value() = _Base[i];
+        p->_body = _Base[i];
         ++_len;
     }
-    _head_ptr = p;
+    _tail_ptr = p;
     return true;
 }
 
