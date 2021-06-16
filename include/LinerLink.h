@@ -26,6 +26,7 @@ public:
     link_size_t find(T _Element) const;
     bool insert(link_size_t _Index, T _Element);
     bool remove(link_size_t _Index);
+    bool listReverse(void);
 
 private:
     using Link<T>::_len;
@@ -57,7 +58,7 @@ bool LinerLink<T>::insert(link_size_t _Index, T _Element)
         if (p == nullptr || p->insert_ahead(_Element) == false)
             return false;
         if (p == _head_ptr)
-            _head_ptr = p->_prev_ptr;
+            _head_ptr = _tail_ptr->_prev_ptr;
     }
     else
     {
@@ -67,7 +68,7 @@ bool LinerLink<T>::insert(link_size_t _Index, T _Element)
         if(p == nullptr || p->insert_behind(_Element) == false)
             return false;
         if(p == _tail_ptr)
-            _tail_ptr = p->_next_ptr;
+            _tail_ptr = _tail_ptr->_next_ptr;
     }
     ++_len;
     return true;
@@ -85,7 +86,7 @@ bool LinerLink<T>::remove(link_size_t _Index)
             return false;
         p = (*this)[_Index];
         if (p == _head_ptr)
-            _head_ptr = p->_next_ptr;
+            _head_ptr = _head_ptr->_next_ptr;
     }
     else
     {
@@ -93,7 +94,7 @@ bool LinerLink<T>::remove(link_size_t _Index)
             return false;
         p = (*this)[_Index];
         if(p == _tail_ptr)
-            _tail_ptr = p->_prev_ptr;
+            _tail_ptr = _tail_ptr->_prev_ptr;
     }
     delete p;
     --_len;
@@ -115,5 +116,6 @@ link_size_t LinerLink<T>::find(T _Element) const
     else
         return cnt;
 }
+
 
 #endif
