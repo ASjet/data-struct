@@ -36,4 +36,5 @@ bool listReverse(LinerLink<T> *&lnk)
     }
     delete lnk;
     lnk = new_lnk;
+    return true;
 }

@@ -71,29 +71,22 @@ bool Link<T>::initialize(T _Element)
 template <typename T>
 bool Link<T>::initializeL(T *_Base, link_size_t _Length)
 {
-    clear();
-    _head_ptr = new LinkNode<T>;
-    if(_head_ptr == nullptr)
-        return false;
-
-    LinkNode<T> *p = _head_ptr;
-    for (link_size_t i = 0; i < _Length; ++i)
+    if(initialize(_Base[0]) == false)
     {
-        if (i != 0)
+        clear();
+        return false;
+    }
+    LinkNode<T> *p = _head_ptr;
+    for (link_size_t i = 1; i < _Length; ++i)
+    {
+        if(p->insert_ahead(_Base[i]) == false)
         {
-            p->_prev_ptr = new LinkNode<T>;
-            if(p->_prev_ptr == nullptr)
-            {
-                clear();
-                return false;
-            }
-            p->_prev_ptr->_next_ptr = p;
-            p = p->_prev_ptr;
+            clear();
+            return false;
         }
-        p->_body = _Base[i];
+        p = p->_prev_ptr;
         ++_len;
     }
-    _tail_ptr = _head_ptr;
     _head_ptr = p;
     return true;
 }
@@ -102,27 +95,21 @@ bool Link<T>::initializeL(T *_Base, link_size_t _Length)
 template <typename T>
 bool Link<T>::initializeR(T *_Base, link_size_t _Length)
 {
-    clear();
-    _tail_ptr = new LinkNode<T>;
-    if(_tail_ptr == nullptr)
+    if(initialize(_Base[0]) == false)
+    {
+        clear();
         return false;
-    _head_ptr = _tail_ptr;
+    }
 
     LinkNode<T> *p = _tail_ptr;
-    for(link_size_t i = 0; i < _Length; ++i)
+    for(link_size_t i = 1; i < _Length; ++i)
     {
-        if(i != 0)
+        if(p->insert_behind(_Base[i]) == false)
         {
-            p->_next_ptr = new LinkNode<T>;
-            if(p->_next_ptr == nullptr)
-            {
-                clear();
-                return false;
-            }
-            p->_next_ptr->_prev_ptr = p;
-            p = p->_next_ptr;
+            clear();
+            return false;
         }
-        p->_body = _Base[i];
+        p = p->_next_ptr;
         ++_len;
     }
     _tail_ptr = p;
