@@ -1,2 +1,2 @@
 # data-struct
-Implement of data_struct by cpp
+Implement of data_struct with cpp
